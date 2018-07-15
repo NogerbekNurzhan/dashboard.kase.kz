@@ -1,0 +1,93 @@
+{% load i18n %}
+
+<div class="modal-header bg-success">
+	<button type="button" class="close" data-dismiss="modal">
+		<i class="fa fa-times"></i>  
+	</button>
+	<h4 class="modal-title text-success">{% trans 'Создать вопрос' %}</h4>
+</div>
+
+<form method="post" action="{% url 'faq:faq_create' current_language %}" class='faq-create-form' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-body">
+		{# START: Title #}
+		<div class="form-group{% if faq_create_form.title.errors %} has-error{% endif %}">
+			<label for="{{ faq_create_form.title.id_for_label }}">{{ faq_create_form.title.label }}</label>
+			{{ faq_create_form.title }}
+			{% if faq_create_form.title.errors %}
+				{% for error in faq_create_form.title.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		{# END: Title #}
+
+		{# START: Answer #}
+		<div class="form-group{% if faq_create_form.answer.errors %} has-error{% endif %}">
+			<label for="{{ faq_create_form.answer.id_for_label }}">{{ faq_create_form.answer.label }}</label>
+			{{ faq_create_form.answer }}
+			{% if faq_create_form.answer.errors %}
+				{% for error in faq_create_form.answer.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		{# END: Answer #}
+
+		{# START: Date #}
+		<div class="form-group{% if faq_create_form.date.errors %} has-error{% endif %}">
+			<label for="{{ faq_create_form.date.id_for_label }}">{{ faq_create_form.date.label }}</label>
+			<div class='input-group date custom-datetimepicker'>
+				{{ faq_create_form.date }}
+				<span class="input-group-addon">
+					<span class="fa fa-calendar"></span>
+				</span>
+			</div>
+			{% if faq_create_form.date.errors %}
+				{% for error in faq_create_form.date.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		{# START: Date #}
+
+		{# START: Loader #}
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+		{# END: Loader #}
+
+		{# START: ERROR #}
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="faq-errors">
+			<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		{# END: ERROR #}
+	</div>
+
+	<div class="modal-footer">
+		<div class="pull-right custom-pull-right">
+			<button type="submit" class="btn btn-success" name="update_submit">{% trans 'Создать' %}</button>
+		</div>
+	</div>
+</form>

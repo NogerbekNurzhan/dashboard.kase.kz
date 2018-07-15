@@ -1,0 +1,158 @@
+{% load i18n %}
+<form method="post" action="{% url 'indicators:section_edit' section.pk %}" class="section-edit-form" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-header bg-success">
+		<button type="button" class="close" data-dismiss="modal">
+			<i class="fa fa-times"></i>  
+		</button>
+		<h4 class="modal-title text-success">{% trans 'Редактировать данные секции индикаторов' %}</h4>
+	</div>
+	<div class="modal-body">
+		<ul class="nav nav-tabs nav-justified" style="margin-bottom: 15px;">
+			<li class="active"><a class="tabnav" data-toggle="tab" href="#tab-ru">{% trans 'Русский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-en">{% trans 'Английский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-kz">{% trans 'Казахский' %}</a></li>
+		</ul>
+		<div class="tab-content custom-tab-content">
+			<div id="tab-ru" class="tab-pane fade in active">
+				<div class="form-group{% if section_edit_form.name_ru.errors %} has-error{% endif %}">
+					<label for="{{ section_edit_form.name_ru.id_for_label }}">{{ section_edit_form.name_ru.label }}</label>
+					{{ section_edit_form.name_ru }}
+					{% if section_edit_form.name_ru.errors %}
+						{% for error in section_edit_form.name_ru.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if section_edit_form.alt_ru.errors %} has-error{% endif %}">
+					<label for="{{ section_edit_form.alt_ru.id_for_label }}">{{ section_edit_form.alt_ru.label }}</label>
+					{{ section_edit_form.alt_ru }}
+					{% if section_edit_form.alt_ru.errors %}
+						{% for error in section_edit_form.alt_ru.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div id="tab-en" class="tab-pane fade">
+				<div class="form-group{% if section_edit_form.name_en.errors %} has-error{% endif %}">
+					<label for="{{ section_edit_form.name_en.id_for_label }}">{{ section_edit_form.name_en.label }}</label>
+					{{ section_edit_form.name_en }}
+					{% if section_edit_form.name_en.errors %}
+						{% for error in section_edit_form.name_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if section_edit_form.alt_en.errors %} has-error{% endif %}">
+					<label for="{{ section_edit_form.alt_en.id_for_label }}">{{ section_edit_form.alt_en.label }}</label>
+					{{ section_edit_form.alt_en }}
+					{% if section_edit_form.alt_en.errors %}
+						{% for error in section_edit_form.alt_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div id="tab-kz" class="tab-pane fade">
+				<div class="form-group{% if section_edit_form.name_kz.errors %} has-error{% endif %}">
+					<label for="{{ section_edit_form.name_kz.id_for_label }}">{{ section_edit_form.name_kz.label }}</label>
+					{{ section_edit_form.name_kz }}
+					{% if section_edit_form.name_kz.errors %}
+						{% for error in section_edit_form.name_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if section_edit_form.alt_kz.errors %} has-error{% endif %}">
+					<label for="{{ section_edit_form.alt_kz.id_for_label }}">{{ section_edit_form.alt_kz.label }}</label>
+					{{ section_edit_form.alt_kz }}
+					{% if section_edit_form.alt_kz.errors %}
+						{% for error in section_edit_form.alt_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="form-group{% if section_edit_form.link.errors %} has-error{% endif %}">
+			<label for="{{ section_edit_form.link.id_for_label }}">{{ section_edit_form.link.label }}</label>
+			{{ section_edit_form.link }}
+			{% if section_edit_form.link.errors %}
+				{% for error in section_edit_form.link.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group{% if section_edit_form.kase_info_key.errors %} has-error{% endif %}">
+			<label for="{{ section_edit_form.kase_info_key.id_for_label }}">{{ section_edit_form.kase_info_key.label }}</label>
+			{{ section_edit_form.kase_info_key }}
+			{% if section_edit_form.kase_info_key.errors %}
+				{% for error in section_edit_form.kase_info_key.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="section-errors">
+			<i class="fa fa-exclamation-triangle"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer custom-modal-footer">
+		<div class="pull-left">
+			<div class="form-group custom-form-group{% if section_edit_form.isvisible.errors %} has-error{% endif %}">
+				<div class="custom-checkbox">
+					<label for="{{ section_edit_form.isvisible.id_for_label }}">
+						{{ section_edit_form.isvisible }}
+						<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+						<strong>{{ section_edit_form.isvisible.label }}</strong>
+					</label>
+				</div>
+				{% if section_edit_form.isvisible.errors %}
+					{% for error in section_edit_form.isvisible.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="pull-right custom-pull-right">
+			<button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Закрыть' %}</button>
+			<button type="submit" class="btn btn-success">{% trans 'Обновить' %}</button>
+		</div>
+	</div>
+</form>

@@ -1,0 +1,213 @@
+{% extends "dashboard.html" %}
+{% load i18n static %}
+{% block dashboard_content %}
+{% if perms.static_pages.view_staticpage_change_history %}
+<div class="dashboard-container">
+	<div class="revision-wrapper">
+		{% for version in versions %}
+		<div class="panel panel-default">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left"><strong class="text-uppercase">{{ version.revision.comment }}</strong></h4>
+				<h4 class="panel-title pull-right">{% trans "Версия" %}&#058;&#9;&#035;{{ version.revision.id }}</h4>
+			</div>
+			{% if "Откат к версии" not in version.revision.comment %}
+			<div class="panel-body">
+				<div class="well">
+					<ul class="nav nav-pills nav-justified">
+						<li class="active"><a data-toggle="pill" href="#revision-RU-{{ forloop.counter }}">{% trans "Русский" %}</a></li>
+						<li><a data-toggle="pill" href="#revision-KZ-{{ forloop.counter }}">{% trans "Казахский" %}</a></li>
+						<li><a data-toggle="pill" href="#revision-EN-{{ forloop.counter }}">{% trans "Английский" %}</a></li>
+					</ul>
+					<div class="tab-content">
+						<div id="revision-RU-{{ forloop.counter }}" class="tab-pane fade in active">
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "head" %}
+									<h4>{% trans "Название страницы" %}</h4>
+									<p class="m-b-unset">
+									{% if not field_value or field_value == "" %}
+										<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+									{% else %}
+										{{ field_value }}
+									{% endif %}
+									</p>
+								{% endif %}
+							{% endfor %}
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "meta_title" %}
+									<h4>{% trans "Мета заголовок" %}</h4>
+									<p class="m-b-unset">
+										{% if not field_value or field_value == None %}
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										{% else %}
+											{{ field_value }}
+										{% endif %}
+									</p>
+								{% endif %}
+							{% endfor %}
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "body" %}
+									<h4>{% trans "Тело страницы" %}</h4>
+									{% if not field_value or field_value == "" %}
+										<p class="m-b-unset text-justify">
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										</p>
+									{% else %}
+										<textarea class="form-control custom-textarea" readonly>{{ field_value }}</textarea>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
+						</div>
+						<div id="revision-KZ-{{ forloop.counter }}" class="tab-pane fade">
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "head_kz" %}
+									<h4>{% trans "Название страницы [kz]" %}</h4>
+									<p class="m-b-unset">
+										{% if not field_value or field_value == "" %}
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										{% else %}
+											{{ field_value }}
+										{% endif %}
+									</p>
+								{% endif %}
+							{% endfor %}
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "meta_title_kz" %}
+									<h4>{% trans "Мета заголовок [kz]" %}</h4>
+									<p class="m-b-unset">
+										{% if not field_value or field_value == None %}
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										{% else %}
+											{{ field_value }}
+										{% endif %}
+									</p>
+								{% endif %}
+							{% endfor %}
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "body_kz" %}
+									<h4>{% trans "Тело страницы [kz]" %}</h4>
+									{% if not field_value or field_value == "" %}
+										<p class="m-b-unset text-justify">
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										</p>
+									{% else %}
+										<textarea class="form-control custom-textarea" readonly>{{ field_value }}</textarea>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
+						</div>
+						<div id="revision-EN-{{ forloop.counter }}" class="tab-pane fade">
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "head_en" %}
+									<h4>{% trans "Название страницы [en]" %}</h4>
+									<p class="m-b-unset">
+										{% if not field_value or field_value == "" %}
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										{% else %}
+											{{ field_value }}
+										{% endif %}
+									</p>
+								{% endif %}
+							{% endfor %}
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "meta_title_en" %}
+									<h4>{% trans "Мета заголовок [en]" %}</h4>
+									<p class="m-b-unset">
+										{% if not field_value or field_value == None %}
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										{% else %}
+											{{ field_value }}
+										{% endif %}
+									</p>
+								{% endif %}
+							{% endfor %}
+							{% for field_name, field_value in version.field_dict.items %}
+								{% if field_name == "body_en" %}
+									<h4>{% trans "Тело страницы [en]" %}</h4>
+									{% if not field_value or field_value == "" %}
+										<p class="m-b-unset text-justify">
+											<i class="fa fa-info-circle" aria-hidden="true"></i>&nbsp;<span>{% trans "Пусто" %}</span>
+										</p>
+									{% else %}
+										<textarea class="form-control custom-textarea" readonly>{{ field_value }}</textarea>
+									{% endif %}
+								{% endif %}
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+				<div class="alert alert-info custom-info">
+					<div class="row">
+					{% for field_name, field_value in version.field_dict.items %}
+						{% if field_name == "is_public" %}
+						<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 text-center">
+							<h4>{% trans "Флаг публикации" %}</h4>
+							<p class="m-b-unset">
+								{% if field_value == True %}
+									{% trans "Опубликован" %}
+								{% elif field_value == False %}
+									{% trans "Не опубликован" %}
+								{% endif %}
+							</p>
+						</div>
+						{% endif %}
+						{% if field_name == "slug" %}
+						<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6 text-center">
+							<h4>{% trans "ЧПУ" %}</h4>
+							<p class="m-b-unset">{{ field_value }}</p>
+						</div>
+						{% endif %}
+					{% endfor %}
+					</div>
+				</div>
+			</div>
+			{% endif %}
+			<div class="panel-footer clearfix custom-panel-footer">
+				<h5 class="pull-left">
+					<i class="fa fa-clock-o" aria-hidden="true"></i>&#9;<span>{{ version.revision.date_created }}</span>&#9;&#124;&#9;<i class="fa fa-user-circle-o" aria-hidden="true"></i>&#9;<span>{{ version.revision.user }}</span>
+				</h5>
+				{% if "Откат к версии" not in version.revision.comment %}
+				<div class="pull-right custom-pull-right">
+					<button class="btn btn-primary btn-white open-close-panel-btn"><i class="fa fa-expand open-close-icon" aria-hidden="true"></i></button>
+					{% if perms.static_pages.revert_staticpage %}
+						{% if not forloop.first %}
+						<a class="btn btn-primary btn-white" href="{% url 'static_page:static_page_revert' pk=staticpage.pk static_page_reversion_id=version.revision.id %}">{% trans "Oткатиться" %}</a>
+						{% endif %}
+					{% endif %}
+				</div>
+				{% endif %}
+			</div>
+		</div>
+		{% empty %}
+			<div class="alert alert-danger text-center" role="alert">
+				<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'Для данной записи изменения не зафиксированы.' %}</span>
+			</div>
+		{% endfor %}
+	</div>
+</div>
+{% else %}
+<div class="dashboard-container">
+	<div class="alert alert-danger text-center" role="alert">
+		<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;<span>{% trans 'У вас нет доступа к просмотру истории изменений статических страниц.' %}</span>
+	</div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+	<script src="{% static 'js/autosize.js'%}"></script> {# Textarea Autosize JS #}
+	<script type="text/javascript">
+		$("textarea").click(function() {
+			autosize(document.querySelectorAll('.custom-textarea'));
+			autosize.update(document.querySelectorAll('.custom-textarea'));
+		});
+		$('.panel').each(function() {
+			$div = $(this).find(".panel-body");
+			$btn = $(this).find(".open-close-panel-btn");
+			$btn.bind("click", {target: $div}, function(e) {
+				$(this).parent().parent().find(".open-close-icon").toggleClass("fa-expand fa-compress");
+				e.data.target.slideToggle();
+			});
+		});
+	</script>
+{% endblock %}

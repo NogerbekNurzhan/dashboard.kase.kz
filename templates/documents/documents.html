@@ -1,0 +1,8 @@
+{% load document_tags %}
+{% load el_pagination_tags %}
+
+{% paginate 15 documents %}
+{% for node in documents %}
+	{% include "documents/tree_template.html" %}
+{% endfor %}
+{% show_more_info %}

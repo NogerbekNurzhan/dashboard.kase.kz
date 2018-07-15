@@ -1,0 +1,47 @@
+{% load tz i18n static %}
+<div class="dashboard-header">
+	<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container-fluid">
+
+			<div class="navbar-header">
+				<button type="button" class="btn navbar-toggle" data-toggle="collapse" data-target="#navbar">
+                    <span class="fa fa-th-list"></span>
+                </button>
+                <button type="button" class="btn btn-success navbar-btn" id="sidebarMenuBtn">
+					<i class="glyphicon glyphicon-th-large"></i>
+				</button>
+				<a class="navbar-brand" href="{% url 'dashboard' %}">
+					<img src="{% static "images/logo.svg" %}">
+				</a>
+			</div>
+			<div class="navbar-collapse collapse" id="navbar">
+				<ul class="nav navbar-nav navbar-right">
+				<li>
+					<p class="navbar-text">
+						<i class="fa fa-calendar"></i>
+						{% timezone "Asia/Almaty" %}{% now "l, d E Y г. H:i" %}{% endtimezone %}
+					</p>
+				</li>
+				<li>
+					<p class="navbar-text">
+						<i class="fa fa-user-circle-o"></i>&nbsp;<span>{{ user.get_username }}</span>
+					</p>
+				</li>
+				<li>
+					<p class="navbar-btn">
+						{% if user.is_authenticated %}
+							<a href="{% url 'administration_logout' %}" class="btn btn-success">
+								<i class="fa fa-sign-in"></i>&nbsp;<span>{% trans "Выйти" %}</span>
+							</a>
+						{% else %}
+							<a href="{% url 'administration_login' %}" class="btn btn-success">
+								<i class="fa fa-sign-out"></i>&nbsp;<span>{% trans "Войти" %}</span>
+							</a>
+						{% endif %}
+					</p>
+				</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+</div>

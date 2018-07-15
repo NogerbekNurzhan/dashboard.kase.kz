@@ -1,0 +1,11 @@
+{% load i18n %}
+<div class="list-group-item custom-list-group-item ui-state-default{% if not indicator.isvisible %} darkgrey{% else %} not-darkgrey{% endif %}" id='indicator-{{ indicator.pk }}'>
+	<span class="ellipsis-text {% if not indicator.isvisible %} darkgrey-txt{% else%} green-txt{% endif %}">{{ indicator }}</span>
+	<span class="btn-group-right">
+		{% if perms.indicators.edit_indicator %}
+		<button class="btn {% if indicator.isvisible %} btn-success{% else %} btn-default darkgrey{% endif %} indicator-edit-btn" data-url="{% url 'indicators:indicator_edit' indicator.pk %}" data-toggle="tooltip" title="{% trans 'Редактировать данные индикатора' %}">
+			<i class="fa fa-pencil"></i>
+		</button>
+		{% endif %}
+	</span>
+</div>

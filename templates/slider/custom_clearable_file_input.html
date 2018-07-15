@@ -1,0 +1,25 @@
+{% load i18n %}
+{% if widget.is_initial %}
+	<div class="alert alert-info" role="alert" id="current-image-info">
+		<i class="fa fa-file-image-o"></i>&nbsp;<span>{{ widget.initial_text }}:</span>
+		<a href="{{ widget.value.url }}">{{ widget.value }}</a>
+		{% if not widget.required %}
+			<input type="checkbox" name="{{ widget.checkbox_name }}" id="{{ widget.checkbox_id }}"/>
+			<label for="{{ widget.checkbox_id }}">{{ widget.clear_checkbox_label }}</label>
+		{% endif %}
+	</div>
+{% endif %}
+<div class="input-group" id="image-field-slide">
+	<input type="text" disabled="disabled" class="form-control" id="image-field-file-name">
+	<span class="input-group-btn">
+		<div class="btn btn-default" id="image-field-clear-btn" style="display: none;">
+			<i class="fa fa-times"></i>
+			<span>{% trans 'Очистить' %}</span>
+		</div>
+		<div class="btn btn-default" id="image-field-input">
+			<i class="fa fa-file-image-o"></i>
+			<span id="image-field-input-title">{% trans 'Загрузить изображение' %}</span>
+			<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %} />
+		</div>
+	</span>
+</div>

@@ -1,0 +1,78 @@
+{% extends "dashboard.html" %}
+{% load i18n static %}
+{% block style %}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"> {# JQuery UI CSS #}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.min.css"> {# Awesome Bootstrap Checkbox CSS #}
+	{% if use_wysiwyg_editor %}
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css"> {# Codemirror CSS #}
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/theme/monokai.min.css"> {# Monokai CSS #}
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css"> {# Summernote CSS #}
+	{% endif %}
+{% endblock %}
+{% block dashboard_content %}
+{% if perms.static_pages.view_staticpage %}
+	<div class="dashboard-container">
+		<div class="alert alert-success alert-dismissible text-center custom-alert" role="alert" id="user-action-message">
+			<i class="fa fa-info-circle"></i>
+			<strong>&nbsp;{% trans "Cообщение" %}:</strong>&nbsp;<span class="user-action-message-description"></span>
+		</div>
+		<div class="panel panel-success responsive-panel">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left">{% trans "Статические страницы" %}</h4>
+				{% if perms.static_pages.add_staticpage %}
+					<a id="static-page-create-btn" class="btn btn-success pull-right ml-15" data-url="{% url 'static_page:static_page_create' %}">
+						<i class="fa fa-plus-circle"></i>&nbsp;<span>{% trans "Создать новую страницу" %}</span>
+					</a>
+				{% endif %}
+				<div class="icon-addon addon-md pull-right">
+					<input type="text" placeholder="{% trans "Введите название или ЧПУ" %}" class="form-control" id="search-static-pages">
+					<label for="search-static-pages" class="glyphicon glyphicon-search" rel="tooltip" title="{% trans "Поиск статической страницы" %}"></label>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="list-group" id="static-pages">{% include 'static_pages/static_pages.html' %}</div>
+				<div class="list-group invisible-item" id="empty-list-group">
+					<div class="list-group-item">
+						<div class="text-center">
+							<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "Поиск не дал результатов. Попробуйте еще раз." %}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="static-page-modal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+{% else %}
+	<div class="dashboard-container">
+		<div class="alert alert-danger perm-alert" role="alert">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;<span>{% trans 'У вас нет доступа к просмотру списка статических страниц. Обратитесь к администратору.' %}</span>
+		</div>
+	</div>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+	<script src="{% static 'js/static_pages/static_page_sorting.js'%}"></script> {# Static Page Sorting JS #}
+	<script src="{% static 'js/static_pages/static_page_search.js'%}"></script> {# Static Page Search JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {# JQuery UI #}
+	<script src="{% static 'js/autosize.js'%}"></script> {# Textarea Autosize JS #}
+	{% if use_wysiwyg_editor %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.min.js"></script>
+	{% endif %}
+	<script src="{% static 'js/summernote.js'%}"></script>
+	{% if use_wysiwyg_editor %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/lang/summernote-ru-RU.min.js"></script>
+	{% endif %}
+	<script src="{% static 'js/static_pages/crud.js'%}"></script> {# Static Page CRUD JS #}
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	</script>
+{% endblock %}

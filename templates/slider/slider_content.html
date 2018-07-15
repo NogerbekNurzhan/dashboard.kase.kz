@@ -1,0 +1,58 @@
+{% extends "dashboard.html" %}
+{% load i18n static %}
+{% block style %}
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css"> {# Django Select 2 CSS #}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"> {# JQuery UI CSS #}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.min.css"> {# Awesome Bootstrap Checkbox CSS #}
+{% endblock %}
+{% block dashboard_content %}
+{% if perms.slider.view_slide %}
+	<div class="dashboard-container">
+		<div class="alert alert-success alert-dismissible text-center custom-alert" role="alert" id="user-action-message">
+			<i class="fa fa-info-circle"></i>
+			<strong>&nbsp;{% trans "Cообщение" %}:</strong>&nbsp;<span class="user-action-message-description"></span>
+		</div>
+		<div class="panel panel-success responsive-panel">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left">{% trans "Слайды" %}</h4>
+				{% if perms.slider.add_slide %}
+				<a id="slide-сreate-btn" class="btn btn-success pull-right" data-url="{% url 'slider:slide_create' %}">
+					<i class="fa fa-plus-circle"></i>
+					<span>{% trans "Создать новый слайд" %}</span>
+				</a>
+				{% endif %}
+			</div>
+			<div class="panel-body">
+				<div id="slides" class="list-group">{% include 'slider/slides.html' %}</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="slide-modal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+{% else %}
+	<div class="dashboard-container">
+		<div class="alert alert-danger perm-alert text-center" role="alert">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;<span>{% trans 'У вас нет доступа к просмотру списка слайдов. Обратитесь к администратору.' %}</span>
+		</div>
+	</div>
+{% endif%}
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+	<script src="{% static 'js/slider/slide_sorting.js'%}"></script> {# Slide Sorting JS #}
+	<script src="{% static 'js/slider/image_field.js'%}"></script> {# Slide Image Field JS #}
+	<script src="{% static 'django_select2/django_select2.js' %}"></script> {# Django Select 2 JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> {# Select 2 JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {# JQuery UI #}
+	<script src="{% static 'js/autosize.js'%}"></script> {# Textarea Autosize JS #}
+	<script src="{% static 'js/slider/crud.js'%}"></script> {# Slide CRUD JS #}
+	<script type="text/javascript">
+	$(document).ready(function(){
+		$('[data-toggle="tooltip"]').tooltip();
+	});
+	</script>
+{% endblock %}

@@ -1,0 +1,158 @@
+{% load i18n %}
+<form method="post" action="{% url 'events:event_create' current_language current_year %}" class='event-create-form' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-header bg-success">
+		<button type="button" class="close" data-dismiss="modal">
+      		<i class="fa fa-times"></i>  
+    	</button>
+		<h4 class="modal-title text-success">{% trans 'Создать новое событие' %}</h4>
+	</div>
+	<div class="modal-body">
+		{# START: Title #}
+		<div class="form-group{% if event_create_form.event_title.errors %} has-error{% endif %}">
+			<label for="{{ event_create_form.event_title.id_for_label }}">{{ event_create_form.event_title.label }}</label>
+			{{ event_create_form.event_title }}
+			{% if event_create_form.event_title.errors %}
+				{% for error in event_create_form.event_title.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		{# END: Title #}
+
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				{# START: Short Name #}
+				<div class="form-group{% if event_create_form.event_shortname.errors %} has-error{% endif %}">
+					<label for="{{ event_create_form.event_shortname.id_for_label }}">{{ event_create_form.event_shortname.label }}</label>
+					{{ event_create_form.event_shortname }}
+					{% if event_create_form.event_shortname.errors %}
+						{% for error in event_create_form.event_shortname.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{# END: Short Name #}
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				{# START: Event Date #}
+				<div class="form-group{% if event_create_form.event_date.errors %} has-error{% endif %}">
+					<label for="{{ event_create_form.event_date.id_for_label }}">{{ event_create_form.event_date.label }}</label>
+					<div class='input-group date custom-datetimepicker'>
+						{{ event_create_form.event_date }}
+						<span class="input-group-addon">
+							<span class="fa fa-calendar"></span>
+						</span>
+					</div>
+					{% if event_create_form.event_date.errors %}
+						{% for error in event_create_form.event_date.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{# START: Event Date #}
+			</div>
+		</div>
+
+		{# START: Event Body #}
+		{% if use_wysiwyg_editor %}
+			<label for="{{ event_create_form.event_body.id_for_label }}">{{ event_create_form.event_body.label }}</label>
+			{{ event_create_form.event_body|safe }}
+		{% else %}
+			<div class="form-group{% if event_create_form.event_body.errors %} has-error{% endif %}">
+				<label for="{{ event_create_form.event_body.id_for_label }}">{{ event_create_form.event_body.label }}</label>
+				<div class="textarea-wrapper">
+					{{ event_create_form.event_body }}
+					<i class="fa fa-expand textarea-icon"></i>
+				</div>
+				{% if event_create_form.event_body.errors %}
+					{% for error in event_create_form.event_body.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		{% endif %}
+		{% if use_wysiwyg_editor %}
+			<div class="alert alert-danger" role="alert">
+				<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'Запрещается встравлять в поле "Описание события" текст из документов Microsoft Word и интернета' %}.</span>
+			</div>
+		{% endif %}
+		{# END: Event Body #}
+
+		{# START: Image #}
+		<div class="input-group" id="image-field-event">
+			<input type="text" disabled="disabled" class="form-control" id="image-field-file-name">
+			<span class="input-group-btn">
+				<div class="btn btn-default" id="image-field-clear-btn" style="display: none;">
+					<i class="fa fa-times"></i>
+					<span>{% trans 'Очистить' %}</span>
+				</div>
+				<div class="btn btn-default" id="image-field-input">
+					<i class="fa fa-file-image-o"></i>
+					<span id="image-field-input-title">{% trans 'Загрузить изображения' %}</span>
+					{{ event_create_form.image_field }}
+				</div>
+			</span>
+		</div>
+		{# END: Image #}
+
+		{# START: Error Message #}
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="event-errors">
+			<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		{# END: Error Message #}
+
+		{# START: Loader #}
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+		{# END: Loader #}
+	</div>
+	<div class="modal-footer custom-modal-footer">
+		<div class="pull-left">
+			<div class="form-group custom-form-group{% if event_create_form.event_active.errors %} has-error{% endif %}">
+				<div class="custom-checkbox">
+					<label for="{{ event_create_form.event_active.id_for_label }}">
+						{{ event_create_form.event_active }}
+						<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+						<strong>{{ event_create_form.event_active.label }}</strong>
+					</label>
+				</div>
+				{% if event_create_form.event_active.errors %}
+					{% for error in event_create_form.event_active.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="pull-right custom-pull-right">
+			<button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Закрыть' %}</button>
+			<button type="submit" class="btn btn-success">{% trans 'Создать' %}</button>
+		</div>
+	</div>
+</form>

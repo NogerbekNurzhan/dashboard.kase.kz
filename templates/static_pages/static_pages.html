@@ -1,0 +1,33 @@
+{% load i18n %}
+{% for static_page in static_pages %}
+	<div class="list-group-item custom-list-group-item ui-state-default" data-id='{{ static_page.id }}'>
+		<span class="search_by ellipsis-text">{{ static_page.head }} {% if static_page.slug != "" %}&nbsp;({{ static_page.slug }}){% endif %}</span>
+		<span class="btn-group-right">
+			{% if static_page.is_public == 0 %}
+				<i class="fa fa-circle text-danger is-public-icon"></i>
+				<span class="is-public-text">&nbsp;{% trans "Страница не опубликована" %}&nbsp;</span>
+			{% endif %}
+			{% if perms.static_pages.delete_staticpage %}
+			<button class="btn btn-danger static-page-delete-btn" data-url="{% url 'static_page:static_page_delete' static_page.id %}" data-toggle="tooltip" title="{% trans "Удалить статическую страницу" %}">
+				<i class="fa fa-ban"></i>
+			</button>
+			{% endif %}
+			{% if perms.static_pages.change_staticpage %}
+			<button class="btn btn-warning static-page-edit-btn ml-5" data-url="{% url 'static_page:static_page_edit' static_page.id %}" data-toggle="tooltip" title="{% trans "Редактировать статическую страницу" %}">
+				<i class="fa fa-pencil"></i>
+			</button>
+			{% endif %}
+			{% if perms.static_pages.view_staticpage_change_history %}
+			<a class="btn btn-info btn-white ml-5" href="{% url 'static_page:static_page_reversions' static_page.id %}" data-toggle="tooltip" title="{% trans "История изменений" %}">
+				<i class="fa fa-book"></i>
+			</a>
+			{% endif %}
+		</span>
+	</div>
+{% empty %}
+	<div class="list-group-item">
+		<div class="text-center">
+			<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "На данный момент нет статических страниц." %}</span>
+		</div>
+	</div>
+{% endfor %}

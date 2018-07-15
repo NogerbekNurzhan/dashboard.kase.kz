@@ -1,0 +1,26 @@
+{% load i18n %}
+<div class="input-group" id="file-field-document">
+	<input type="text" disabled="disabled" class="form-control" id="file-field-file-name">
+	<span class="input-group-btn">
+		<div class="btn btn-default" id="file-field-clear-btn" style="display: none;">
+			<i class="fa fa-times"></i>
+			<span>{% trans 'Очистить' %}</span>
+		</div>
+		<div class="btn btn-default" id="file-field-input">
+			<i class="fa fa-file-text-o"></i>
+			<span id="file-field-input-title">{% trans 'Загрузить файл' %}</span>
+			<input type="{{ widget.type }}" name="{{ widget.name }}"{% include "django/forms/widgets/attrs.html" %} />
+		</div>
+	</span>
+</div>
+<div class="alert alert-info" role="alert">
+	<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'Вы сможите загрузить файлы следующих форматов: .pdf, .zip, .rar, .doc, .docx, .rtf' %}</span>
+</div>
+{% if widget.is_initial %}
+	<div class="alert alert-info" role="alert" id="current-file-info">
+		<i class="fa fa-file-text-o"></i>&nbsp;<span>{{ widget.initial_text }}:</span>
+		<a href="http://doc.kase.kz/{{ widget.value.name }}">
+			{{ widget.value }}
+		</a>
+	</div>
+{% endif %}

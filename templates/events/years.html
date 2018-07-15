@@ -1,0 +1,5 @@
+{% for year in years %}
+	<a class="btn btn-info{% if year|date:'Y' in request.path %} disabled{% endif %}" href="{% url "events:event_language_year" year=year|date:"Y" language=current_language %}">
+		{{ year|date:"Y" }}
+	</a>
+{% endfor %}

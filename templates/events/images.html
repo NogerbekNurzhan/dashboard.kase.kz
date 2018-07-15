@@ -1,0 +1,31 @@
+{% load i18n %}
+<div class="modal-body">
+	<div class="panel panel-default image-list-panel">
+		<div class="panel-body image-list-panel-body">
+			<div class="row text-center">
+				{% for key, value in images.items %}
+					<div class="col-xs-6 col-md-4" id="{{ key }}">
+						<label class="thumbnail">
+							<img src="http://kase.kz/{{ value }}" alt="{% trans 'Файл поврежден' %}" class="img-check text-center" data-toggle="tooltip" title="{{ key }}">
+							<input type="checkbox" name="images" value="{{ key }}" class="checkboxes hidden" autocomplete="off"/>
+						</label>
+					</div>
+				{% empty %}
+					<i class="fa fa-info-circle" aria-hidden="true">&nbsp;</i><span>{% trans 'Для данного события нет изображений.' %}</span>
+				{% endfor %}
+			</div>
+		</div>
+		{% if images %}
+			<div class="modal-footer custom-modal-footer">
+				<div class="pull-left">
+					<span>{% trans 'Выбирите изображения, которые хотите удалить и нажмите кнопку "Удалить изображения"' %}</span>
+				</div>
+				<div class="pull-right custom-pull-right">
+					<button id="event-delete-images-btn" type="submit" class="btn btn-default pull-right" name="delete_submit" disabled>
+						<i class="fa fa-ban" aria-hidden="true"></i>&nbsp;<span>{% trans 'Удалить изображения' %}</span>
+					</button>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+</div>

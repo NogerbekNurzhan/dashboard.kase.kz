@@ -1,0 +1,89 @@
+{% load i18n %}
+
+<form method="post" action="{% if '/documents/8/' not in request.path %}{% url 'documents:category_year_edit' current_category current_year document.id %}{% else %}{% url 'documents:category_tab_edit' current_category current_tab document.id %}{% endif %}" class='document-edit-form' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-header bg-success">
+		<button type="button" class="close" data-dismiss="modal">
+			<i class="fa fa-times"></i>  
+		</button>
+		<h4 class="modal-title text-success">{% trans 'Отредактировать данные документа' %}</h4>
+	</div>
+	<div class="modal-body">
+		<div class="form-group{% if document_edit_form.title.errors %} has-error{% endif %}">
+			<label for="{{ document_edit_form.title.id_for_label }}">{{ document_edit_form.title.label }}</label>
+			{{ document_edit_form.title }}
+			{% if document_edit_form.title.errors %}
+				{% for error in document_edit_form.title.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group{% if document_edit_form.tab.errors %} has-error{% endif %}">
+			<label for="{{ document_edit_form.tab.id_for_label }}">{{ document_edit_form.tab.label }}</label>
+			{{ document_edit_form.tab }}
+			{% if document_edit_form.tab.errors %}
+				{% for error in document_edit_form.tab.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group{% if document_edit_form.date_add.errors %} has-error{% endif %}">
+			<label for="{{ document_edit_form.date_add.id_for_label }}">{{ document_edit_form.date_add.label }}</label>
+			<div class='input-group date custom-datetimepicker'>
+				{{ document_edit_form.date_add }}
+				<span class="input-group-addon">
+					<span class="fa fa-calendar"></span>
+				</span>
+			</div>
+			{% if document_edit_form.date_add.errors %}
+				{% for error in document_edit_form.date_add.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+
+		<div class="form-group{% if document_edit_form.src_url.errors %} has-error{% endif %}">
+			<label for="{{ document_edit_form.src_url.id_for_label }}">{{ document_edit_form.src_url.label }}</label>
+			{{ document_edit_form.src_url }}
+			{% if document_edit_form.src_url.errors %}
+				{% for error in document_edit_form.src_url.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		{{ document_edit_form.src }}
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="documents-errors">
+			<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Закрыть' %}</button>
+		<button type="submit" class="btn btn-success">{% trans 'Обновить' %}</button>
+	</div>
+</form>

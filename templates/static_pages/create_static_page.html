@@ -1,0 +1,212 @@
+{% load i18n %}
+<form method="post" action="{% url 'static_page:static_page_create' %}" class='static-page-create-form' enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-header bg-success">
+		<button type="button" class="close" data-dismiss="modal">
+			<i class="fa fa-times"></i>  
+		</button>
+		<h4 class="modal-title text-success">{% trans 'Создать новую статическую страницу' %}</h4>
+	</div>
+	<div class="modal-body">
+		<ul class="nav nav-tabs nav-justified">
+			<li class="active"><a class="tabnav" data-toggle="tab" href="#tab-ru">{% trans 'Русский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-en">{% trans 'Английский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-kz">{% trans 'Казахский' %}</a></li>
+		</ul>
+		<div class="tab-content custom-tab-content">
+			<div id="tab-ru" class="tab-pane fade in active">
+				<div class="form-group{% if static_page_create_form.head.errors %} has-error{% endif %}">
+					<label for="{{ static_page_create_form.head.id_for_label }}">{{ static_page_create_form.head.label }}</label>
+					{{ static_page_create_form.head }}
+					{% if static_page_create_form.head.errors %}
+						{% for error in static_page_create_form.head.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if static_page_create_form.meta_title.errors %} has-error{% endif %}">
+					<label for="{{ static_page_create_form.meta_title.id_for_label }}">{{ static_page_create_form.meta_title.label }}</label>
+					{{ static_page_create_form.meta_title }}
+					{% if static_page_create_form.meta_title.errors %}
+						{% for error in static_page_create_form.meta_title.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{% if use_wysiwyg_editor %}
+					<label for="{{ static_page_create_form.body.id_for_label }}">{{ static_page_create_form.body.label }}</label>
+					{{ static_page_create_form.body|safe }}
+				{% else %}
+					<div class="form-group{% if static_page_create_form.body.errors %} has-error{% endif %}">
+						<label for="{{ static_page_create_form.body.id_for_label }}">{{ static_page_create_form.body.label }}</label>
+						<div class="textarea-wrapper">
+							{{ static_page_create_form.body }}
+							<i class="fa fa-expand textarea-icon"></i>
+						</div>
+						{% if static_page_create_form.body.errors %}
+							{% for error in static_page_create_form.body.errors %}
+								<ul class="list-unstyled">
+									<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+								</ul>
+							{% endfor %}
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+			<div id="tab-en" class="tab-pane fade">
+				<div class="form-group{% if static_page_create_form.head_en.errors %} has-error{% endif %}">
+					<label for="{{ static_page_create_form.head_en.id_for_label }}">{{ static_page_create_form.head_en.label }}</label>
+					{{ static_page_create_form.head_en }}
+					{% if static_page_create_form.head_en.errors %}
+						{% for error in static_page_create_form.head_en.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if static_page_create_form.meta_title_en.errors %} has-error{% endif %}">
+					<label for="{{ static_page_create_form.meta_title_en.id_for_label }}">{{ static_page_create_form.meta_title_en.label }}</label>
+					{{ static_page_create_form.meta_title_en }}
+					{% if static_page_create_form.meta_title_en.errors %}
+						{% for error in static_page_create_form.meta_title_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{% if use_wysiwyg_editor %}
+					<label for="{{ static_page_create_form.body_en.id_for_label }}">{{ static_page_create_form.body_en.label }}</label>
+					{{ static_page_create_form.body_en|safe }}
+				{% else %}
+					<div class="form-group{% if static_page_create_form.body_en.errors %} has-error{% endif %}">
+						<label for="{{ static_page_create_form.body_en.id_for_label }}">{{ static_page_create_form.body_en.label }}</label>
+						<div class="textarea-wrapper">
+							{{ static_page_create_form.body_en }}
+							<i class="fa fa-expand textarea-icon"></i>
+						</div>
+						{% if static_page_create_form.body_en.errors %}
+							{% for error in static_page_create_form.body_en.errors %}
+								<ul class="list-unstyled">
+									<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+								</ul>
+							{% endfor %}
+						{% endif %}
+					</div>
+					{% endif %}
+				</div>
+			<div id="tab-kz" class="tab-pane fade">
+				<div class="form-group{% if static_page_create_form.head_kz.errors %} has-error{% endif %}">
+					<label for="{{ static_page_create_form.head_kz.id_for_label }}">{{ static_page_create_form.head_kz.label }}</label>
+					{{ static_page_create_form.head_kz }}
+					{% if static_page_create_form.head_kz.errors %}
+						{% for error in static_page_create_form.head_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if static_page_create_form.meta_title_kz.errors %} has-error{% endif %}">
+					<label for="{{ static_page_create_form.meta_title_kz.id_for_label }}">{{ static_page_create_form.meta_title_kz.label }}</label>
+					{{ static_page_create_form.meta_title_kz }}
+					{% if static_page_create_form.meta_title_kz.errors %}
+						{% for error in static_page_create_form.meta_title_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{% if use_wysiwyg_editor %}
+					<label for="{{ static_page_create_form.body_kz.id_for_label }}">{{ static_page_create_form.body_kz.label }}</label>
+					{{ static_page_create_form.body_kz|safe }}
+				{% else %}
+					<div class="form-group{% if static_page_create_form.body_kz.errors %} has-error{% endif %}">
+						<label for="{{ static_page_create_form.body_kz.id_for_label }}">{{ static_page_create_form.body_kz.label }}</label>
+						<div class="textarea-wrapper">
+							{{ static_page_create_form.body_kz }}
+							<i class="fa fa-expand textarea-icon"></i>
+						</div>
+						{% if static_page_create_form.body_kz.errors %}
+							{% for error in static_page_create_form.body_kz.errors %}
+								<ul class="list-unstyled">
+									<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+								</ul>
+							{% endfor %}
+						{% endif %}
+					</div>
+				{% endif %}
+			</div>
+		</div>
+		{% if use_wysiwyg_editor %}
+			<div class="alert alert-danger" role="alert">
+				<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'Запрещается встравлять в поле "Тело страницы" текст из документов Microsoft Word и интернета' %}.</span>
+			</div>
+		{% endif %}
+		<div class="form-group{% if static_page_create_form.slug.errors %} has-error{% endif %}">
+			<label for="{{ static_page_create_form.slug.id_for_label }}">{{ static_page_create_form.slug.label }}</label>
+			{{ static_page_create_form.slug }}
+			{% if static_page_create_form.slug.errors %}
+				{% for error in static_page_create_form.slug.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="alert alert-info" role="alert">
+			<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'Поле ЧПУ должно иметь уникальную, неповторяющуюся запись' %}</span><br><i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'В поле ЧПУ запрещается вводить символы ! : @ # $ % ^ & * ( ) , . ? * / \ | = + ~ `' %}</span><br><i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'В поле ЧПУ разрешается вводить символы _ -' %}</span>
+		</div>
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="static-pages-errors">
+			<i class="fa fa-exclamation-triangle"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer custom-modal-footer">
+		<div class="pull-left">
+			<div class="form-group custom-form-group{% if static_page_create_form.is_public.errors %} has-error{% endif %}">
+				<div class="custom-checkbox">
+					<label for="{{ static_page_create_form.is_public.id_for_label }}">
+						{{ static_page_create_form.is_public }}
+						<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+						<strong>{{ static_page_create_form.is_public.label }}</strong>
+					</label>
+				</div>
+				{% if static_page_create_form.is_public.errors %}
+					{% for error in static_page_create_form.is_public.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="pull-right custom-pull-right">
+			<button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Закрыть' %}</button>
+			<button type="submit" class="btn btn-success">{% trans 'Создать' %}</button>
+		</div>
+	</div>
+</form>

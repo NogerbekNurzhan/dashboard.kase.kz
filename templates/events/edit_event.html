@@ -1,0 +1,203 @@
+{% load i18n %}
+
+<div class="modal-header bg-success">
+	<button type="button" class="close" data-dismiss="modal">
+		<i class="fa fa-times"></i>  
+	</button>
+	<h4 class="modal-title text-success">{% trans 'Редактировать событие' %}</h4>
+</div>
+
+<form method="post" action="{% url 'events:event_edit' current_language current_year event.pk %}" class='event-edit-form' enctype="multipart/form-data">
+	{% csrf_token %}
+
+	<div class="modal-body">
+		{# START: Title #}
+		<div class="form-group{% if event_edit_form.event_title.errors %} has-error{% endif %}">
+			<label for="{{ event_edit_form.event_title.id_for_label }}">{{ event_edit_form.event_title.label }}</label>
+			{{ event_edit_form.event_title }}
+			{% if event_edit_form.event_title.errors %}
+				{% for error in event_edit_form.event_title.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		{# END: Title #}
+
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				{# START: Short Name #}
+				<div class="form-group{% if event_edit_form.event_shortname.errors %} has-error{% endif %}">
+					<label for="{{ event_edit_form.event_shortname.id_for_label }}">{{ event_edit_form.event_shortname.label }}</label>
+					{{ event_edit_form.event_shortname }}
+					{% if event_edit_form.event_shortname.errors %}
+						{% for error in event_edit_form.event_shortname.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{# END: Short Name #}
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				{# START: Event Date #}
+				<div class="form-group{% if event_edit_form.event_date.errors %} has-error{% endif %}">
+					<label for="{{ event_edit_form.event_date.id_for_label }}">{{ event_edit_form.event_date.label }}</label>
+					{{ event_edit_form.event_date }}
+					{% if event_edit_form.event_date.errors %}
+						{% for error in event_edit_form.event_date.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				{# START: Event Date #}
+			</div>
+		</div>
+
+		<div class="alert alert-info" role="alert">
+			<span>{% trans 'Поля "Адрес" и "Дата события" доступны лишь для чтения. Вы не можете их редактировать' %}</span>
+		</div>
+
+		{# START: Event Body #}
+		{% if use_wysiwyg_editor %}
+			<label for="{{ event_edit_form.event_body.id_for_label }}">{{ event_edit_form.event_body.label }}</label>
+			{{ event_edit_form.event_body|safe }}
+		{% else %}
+			<div class="form-group{% if event_edit_form.event_body.errors %} has-error{% endif %}">
+				<label for="{{ event_edit_form.event_body.id_for_label }}">{{ event_edit_form.event_body.label }}</label>
+				<div class="textarea-wrapper">
+					{{ event_edit_form.event_body }}
+					<i class="fa fa-expand textarea-icon"></i>
+				</div>
+				{% if event_edit_form.event_body.errors %}
+					{% for error in event_edit_form.event_body.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		{% endif %}
+		{% if use_wysiwyg_editor %}
+			<div class="alert alert-danger" role="alert">
+				<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans 'Запрещается встравлять в поле "Описание события" текст из документов Microsoft Word и интернета.' %}</span>
+			</div>
+		{% endif %}
+		{# END: Event Body #}
+
+		{# START: Image #}
+		<div class="form-group" id="image-form-group">
+			<div class="input-group" id="image-field-event">
+				<input type="text" disabled="disabled" class="form-control" id="image-field-file-name">
+				<span class="input-group-btn">
+					<div class="btn btn-default" id="image-field-clear-btn" style="display: none;">
+						<i class="fa fa-times"></i>
+						<span>{% trans 'Очистить' %}</span>
+					</div>
+					<div class="btn btn-default" id="image-field-input">
+						<i class="fa fa-file-image-o"></i>
+						<span id="image-field-input-title">{% trans 'Загрузить изображения' %}</span>
+						{{ event_edit_form.image_field }}
+					</div>
+				</span>
+			</div>
+		</div>
+		{# END: Image #}
+
+		{# START: Error Message #}
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="event-errors">
+			<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		{# END: Error Message #}
+
+		{# START: Loader #}
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+		{# END: Loader #}
+
+		{# START: ERROR #}
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="event-errors">
+			<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		{# END: ERROR #}
+	</div>
+
+	<div class="modal-footer custom-modal-footer">
+		<div class="pull-left">
+			<div class="form-group custom-form-group{% if event_edit_form.event_active.errors %} has-error{% endif %}">
+				<div class="custom-checkbox">
+					<label for="{{ event_edit_form.event_active.id_for_label }}">
+						{{ event_edit_form.event_active }}
+						<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+						<strong>{{ event_edit_form.event_active.label }}</strong>
+					</label>
+				</div>
+				{% if event_edit_form.event_active.errors %}
+					{% for error in event_edit_form.event_active.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="pull-right custom-pull-right">
+			<button type="submit" class="btn btn-success" name="update_submit">{% trans 'Обновить данные' %}</button>
+		</div>
+	</div>
+</form>
+
+<form method="post" action="{% url 'events:image_delete' event.pk %}" class="event-image-delete-form" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-body">
+		<div class="panel panel-default image-list-panel">
+			<div class="panel-body image-list-panel-body">
+				<div class="row text-center">
+					{% for key, value in images.items %}
+						<div class="col-xs-6 col-md-4" id="{{ key }}">
+							<label class="thumbnail">
+								<img src="http://kase.kz/{{ value }}" alt="{% trans 'Файл поврежден' %}" class="img-check text-center" data-toggle="tooltip" title="{{ key }}">
+								<input type="checkbox" name="images" value="{{ key }}" class="checkboxes hidden" autocomplete="off"/>
+							</label>
+						</div>
+					{% empty %}
+						<i class="fa fa-info-circle" aria-hidden="true">&nbsp;</i><span>{% trans 'Для данного события нет изображений.' %}</span>
+					{% endfor %}
+				</div>
+			</div>
+			{% if images %}
+				<div class="modal-footer custom-modal-footer">
+					<div class="pull-left">
+						<span>{% trans 'Выбирите изображения, которые хотите удалить и нажмите кнопку "Удалить изображения"' %}</span>
+					</div>
+					<div class="pull-right custom-pull-right">
+						<button id="event-delete-images-btn" type="submit" class="btn btn-default pull-right" name="delete_submit" disabled>
+							<i class="fa fa-ban" aria-hidden="true"></i>&nbsp;<span>{% trans 'Удалить изображения' %}</span>
+						</button>
+					</div>
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</form>

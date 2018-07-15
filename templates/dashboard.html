@@ -1,0 +1,139 @@
+{% extends "index.html" %}
+{% load i18n static %}
+{% block title %}{% trans "Панель управления администратора" %}{% endblock %}
+
+{% block header %}{% include 'header.html' %}{% endblock %}
+
+{% block content %}
+	<div class="dashboard-wrapper">
+		<div class="dashboard-content">{% block dashboard_content %}{% endblock %}</div>
+		<nav class="dashboard-sidebar">
+			<div class="sidebar-header"><h3>{% trans 'Меню' %}</h3></div>
+			<ul class="list-unstyled components">
+				<p>
+					<i class="fa fa-list-ul"></i>
+					<span class="sidebar-menu-subtitle">{% trans 'Модули' %}</span>
+				</p>
+				{% if perms.slider.view_slide %}
+				<li>
+					{% url 'slider:slide_list' as slide_list %}
+					<a href="{% url 'slider:slide_list' %}" class="{% if request.path == slide_list %}active disabled{% endif %}">{% trans 'Модуль "Слайдер"' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.static_pages.view_staticpage %}
+				<li>
+					{% url 'static_page:static_page_list' as static_page_list %}
+					<a href="{% url 'static_page:static_page_list' %}" class="{% if request.path == static_page_list %}active disabled{% endif %}">{% trans 'Модуль "Статические страницы"' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.auth.view_user %}
+				<li>
+					{% url 'user:user_list' as user_list %}
+					<a href="{% url 'user:user_list' %}" class="{% if request.path == user_list %}active disabled{% endif %}">{% trans 'Модуль "Пользователи"' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.video.view_video %}
+				<li>
+					{% url 'video:video_list' as video_list %}
+					<a href="{% url 'video:video_list' %}" class="{% if request.path == video_list %}active disabled{% endif %}">{% trans 'Модуль "Видео"' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.events.view_events %}
+				<li>
+					{% url 'events:event_language' as event_language %}
+					<a href="{% url 'events:event_language' language='ru' %}"{% if '/events/ru/' in request.path or '/events/en/' in request.path or '/events/kz/' in request.path %}class="active disabled"{% endif %}>{% trans 'Модуль "События"' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.faq.view_faq %}
+				<li>
+					{% url 'faq:faq_language' as faq_language %}
+					<a href="{% url 'faq:faq_language' language='ru' %}"{% if '/faq/ru/' in request.path or '/faq/en/' in request.path or '/faq/kz/' in request.path %}class="active disabled"{% endif %}>{% trans 'Модуль "FAQ"' %}</a>
+				</li>
+				{% endif %}
+				{% if not perms.slider.view_slide and not perms.static_pages.view_staticpage and not perms.auth.view_user and not perms.video.view_video and not perms.events.view_events and not perms.faq.view_faq %}
+					<li>
+						<span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;{% trans 'Нет доступа к модулям' %}</span>
+					</li>
+				{% endif %}
+				<p>
+					<i class="fa fa-file-text"></i>
+					<span class="sidebar-menu-subtitle">{% trans 'Документы' %}</span>
+				</p>
+				{% if perms.documents.view_document_1 %}
+				<li>
+					<a href="/documents/1/"{% if "/documents/1/" in request.path %}class="active disabled"{% endif %}>{% trans 'Материалы СД' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_2 %}
+				<li>
+					<a href="/documents/2/"{% if "/documents/2/" in request.path %} class="active disabled"{% endif %}>{% trans 'Документы комитета СД' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_3 %}
+				<li>
+					<a href="/documents/3/"{% if "/documents/3/" in request.path %} class="active disabled"{% endif %}>{% trans 'Комитет по аудиту' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_4 %}
+				<li>
+					<a href="/documents/4/"{% if "/documents/4/" in request.path %} class="active disabled"{% endif %}>{% trans 'Комитет по стратегии' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_5 %}
+				<li>
+					<a href="/documents/5/"{% if "/documents/5/" in request.path %} class="active disabled"{% endif %}>{% trans 'Комитет по кадрам' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_7 %}
+				<li>
+					<a href="/documents/7/"{% if "/documents/7/" in request.path %} class="active disabled"{% endif %}>{% trans 'Планы, бюджеты, отчеты' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_8 %}
+				<li>
+					<a href="/documents/8/"{% if '/documents/8/' in request.path %} class='active disabled'{% endif %}>{% trans 'Документы, утвержденные СД' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_9 %}
+				<li>
+					<a href="/documents/9/"{% if "/documents/9/" in request.path %} class="active disabled"{% endif %}>{% trans 'Модернизация ИТ' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_11 %}
+				<li>
+					<a href="/documents/11/"{% if "/documents/11/" in request.path %} class="active disabled"{% endif %}>{% trans 'Листинговая комиссия' %}</a>
+				</li>
+				{% endif %}
+				{% if perms.documents.view_document_12 %}
+				<li>
+					<a href="/documents/12/"{% if "/documents/12/" in request.path %} class="active disabled"{% endif %}>{% trans 'Собрания акционеров' %}</a>
+				</li>
+				{% endif %}
+				{% if not perms.documents.view_document_1 and not perms.documents.view_document_2 and not perms.documents.view_document_3 and not perms.documents.view_document_4 and not perms.documents.view_document_5 and not perms.documents.view_document_5 and not perms.documents.view_document_7 and not perms.documents.view_document_8 and not perms.documents.view_document_9 and not perms.documents.view_document_11 and not perms.documents.view_document_12 %}
+					<li>
+						<span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;{% trans 'Нет доступа к документам' %}</span>
+					</li>
+				{% endif %}
+				<p>
+					<i class="fa fa-book"></i>
+					<span class="sidebar-menu-subtitle">{% trans 'Справочники' %}</span>
+				</p>
+				{% if perms.indicators.view_indicators %}
+				<li>
+					{% url 'indicators:section_list' as section_list %}
+					<a href="{% url 'indicators:section_list' %}" class="{% if request.path == section_list %}active disabled{% endif %}">{% trans 'Справочник индикаторов' %}</a>
+				</li>
+				{% endif %}
+				{% if not perms.indicators.view_indicators %}
+					<li>
+						<span><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;{% trans 'Нет доступа к справочникам' %}</span>
+					</li>
+				{% endif %}
+			</ul>
+		</nav>
+	</div>
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+{% endblock %}

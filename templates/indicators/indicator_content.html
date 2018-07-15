@@ -1,0 +1,169 @@
+{% extends "dashboard.html" %}
+{% load i18n static %}
+{% block style %}
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css"> {# Django Select 2 CSS #}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"> {# JQuery UI CSS #}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.min.css"> {# Awesome Bootstrap Checkbox CSS #}
+{% endblock %}
+{% block dashboard_content %}
+{% if perms.events.view_events %}
+	{# START: Indicator Section Container #}
+	<div class="dashboard-container indicator-section-container">
+		{# START: Message Of Action #}
+		<div class="alert alert-success alert-dismissible text-center custom-alert" role="alert" id="user-action-message">
+			<i class="fa fa-info-circle"></i>
+			<strong>&nbsp;{% trans "Cообщение" %}:</strong>&nbsp;<span class="user-action-message-description"></span>
+		</div>
+		{# END: Message Of Action #}
+
+		{# START: Sections With Indicators #}
+		<div id="sections">
+			{% for section, indicators in dictionary.items %}
+			<div class="panel responsive-panel section-panel{% if section.isvisible %} panel-success{% else %} panel-default{% endif %}" data-id='{{section.pk}}'>
+				{# START: panel header #}
+				<div class="panel-heading clearfix">
+					<h4 class="panel-title pull-left">{{ section }}</h4>
+					<i class="btn btn-info btn-white pull-right ml-5 section-drag-and-drop-btn">
+						<i class="fa fa-bars" aria-hidden="true"></i>
+					</i>
+					{% if perms.indicators.edit_section_of_indicators %}
+					<a class="btn {% if section.isvisible %} btn-success{% else %} btn-default{% endif %} section-edit-btn pull-right ml-5" data-url="{% url 'indicators:section_edit' section.pk %}" data-toggle="tooltip" title="{% trans 'Редактировать секцию индикаторов' %}">
+						<i class="fa fa-pencil"></i>
+					</a>
+					{% endif %}
+					<button class="btn {% if section.isvisible %} btn-success btn-white{% else %} btn-default{% endif %} pull-right open-close-panel-btn">
+						<i class="fa fa-expand open-close-icon" aria-hidden="true"></i>
+					</button>
+				</div>
+				{# START: panel header #}
+
+				{# START: panel body #}
+				<div class="panel-body">
+					<div class="list-group indicators" id="section-{{section.pk}}">
+					{% for indicator in indicators %}
+						<div class="list-group-item custom-list-group-item ui-state-default{% if not indicator.isvisible %} darkgrey{% else %} not-darkgrey{% endif %}" id='indicator-{{ indicator.pk }}'>
+							<span class="ellipsis-text {% if not indicator.isvisible %} darkgrey-txt{% else%} green-txt{% endif %}">{{ indicator }}</span>
+							<span class="btn-group-right">
+								{% if perms.indicators.edit_indicator %}
+								<button class="btn {% if indicator.isvisible %} btn-success{% else %} btn-default darkgrey{% endif %} indicator-edit-btn" data-url="{% url 'indicators:indicator_edit' indicator.pk %}" data-toggle="tooltip" title="{% trans 'Редактировать данные индикатора' %}">
+									<i class="fa fa-pencil"></i>
+								</button>
+								{% endif %}
+							</span>
+						</div>
+						{% if forloop.first %}
+							<div class="list-group-item empty-list-group-item unstyled-list-group-item text-center">
+								<span{% if not section.isvisible %} class="darkgrey-txt"{% endif %}>
+									<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "В данной секции отсутствуют индикаторы." %}</span>
+								</span>
+							</div>
+						{% endif %}
+					{% empty %}
+						<div class="list-group-item empty-list-group-item unstyled-list-group-item text-center">
+							<span{% if not section.isvisible %} class="darkgrey-txt"{% endif %}>
+								<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "В данной секции отсутствуют индикаторы." %}</span>
+							</span>
+						</div>
+					{% endfor %}
+					</div>
+				</div>
+				{# END: panel body #}
+			</div>
+			{% endfor %}
+		</div>
+		{# END: Sections With Indicators #}
+
+		{# START: Indicators Without Section #}
+		<div class="panel responsive-panel section-panel panel-default">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left darkgrey">{% trans "Несвязанные индексы" %}</h4>
+				<button class="btn btn-default darkgrey pull-right open-close-panel-btn"><i class="fa fa-expand open-close-icon" aria-hidden="true"></i></button>
+			</div>
+			<div class="panel-body">
+				<div class="list-group indicators" id="section-0">
+				{% for indicator in indicators_without_section %}
+					<div class="list-group-item custom-list-group-item ui-state-default{% if not indicator.isvisible %} darkgrey{% else %} not-darkgrey{% endif %}" id='indicator-{{ indicator.pk }}'>
+						<span class="ellipsis-text {% if not indicator.isvisible %} darkgrey-txt{% endif %}">{{ indicator }}</span>
+						<span class="btn-group-right">
+							<button class="btn {% if indicator.isvisible %} btn-success{% else %} btn-default darkgrey{% endif %} indicator-edit-btn" data-url="{% url 'indicators:indicator_edit' indicator.pk %}" data-toggle="tooltip" title="{% trans 'Редактировать данные индикатора' %}">
+								<i class="fa fa-pencil"></i>
+							</button>
+						</span>
+					</div>
+					{% if forloop.first %}
+						<div class="list-group-item empty-list-group-item unstyled-list-group-item text-center">
+							<span class="darkgrey-txt">
+								<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "В данной секции отсутствуют индикаторы." %}</span>
+							</span>
+						</div>
+					{% endif %}
+				{% empty %}
+					<div class="list-group-item unstyled-list-group-item text-center">
+						<div class="darkgrey-txt">
+							<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "В данной секции отсутствуют индикаторы." %}</span>
+						</div>
+					</div>
+				{% endfor %}
+				</div>
+			</div>
+		</div>
+		{# END: Indicators Without Section #}
+	</div>
+	{# END: Indicator Section Container #}
+
+	{# START: Model #}
+	<div class="modal fade" id="section-indicator-modal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+	{# END: Model #}
+{% else %}
+	<div class="dashboard-container">
+		<div class="alert alert-danger perm-alert text-center" role="alert">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;<span>{% trans 'У вас нет доступа к просмотру данного справочника. Обратитесь к администратору.' %}</span>
+		</div>
+	</div>
+{% endif%}
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+	<script src="{% static 'django_select2/django_select2.js' %}"></script> {# Django Select 2 JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script> {# Select 2 JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {# JQuery UI #}
+	<script type="text/javascript">$(document).ready(function(){$('[data-toggle="tooltip"]').tooltip();});</script> {# Tooltip #}
+
+	{# START: Open/Close panel #}
+	<script type="text/javascript">
+	$('.panel').each(function() {
+		$div = $(this).find(".panel-body");
+		$btn = $(this).find(".open-close-panel-btn");
+		$btn.bind("click", {target: $div}, function(e) {
+			$(this).parent().parent().find(".open-close-icon").toggleClass("fa-expand fa-compress");
+			e.data.target.slideToggle();
+		});
+	});
+	</script>
+	{# START: Open/Close panel #}
+
+	{# START: Show .empty-list-group-item if section don't have any indicator #}
+	<script type="text/javascript">
+	function refreshEmptyListGroupItem() {
+		$(".indicators").each(function() {
+			if($(this).find(".list-group-item").length>=2){
+				$(this).find('.empty-list-group-item:first').css('display', 'none');
+			}
+			else{
+				$(this).find('.empty-list-group-item:first').css('display', 'flex');
+			}
+		});
+	}
+	refreshEmptyListGroupItem();
+	</script>
+	{# END: Show .empty-list-group-item if section don't have any indicator #}
+
+	<script src="{% static 'js/indicators/sorting.js'%}"></script> {# Sorting JS #}
+
+	<script src="{% static 'js/indicators/crud.js'%}"></script> {# CRUD JS #}
+{% endblock %}

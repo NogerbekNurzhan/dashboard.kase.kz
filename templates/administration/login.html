@@ -1,0 +1,71 @@
+{% extends "index.html" %}
+
+{% load i18n %}
+
+{% block title %}{% trans "Войти в панель управления администратора" %}{% endblock %}
+
+{% block content %}
+<div class="login-layout">
+	<div class="container-fluid">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<form action="{% url 'administration_login' %}" method="post">
+					{% csrf_token %}
+					<div class="modal-header">
+						<h4 class="modal-title text-success"><i class="fa fa-sign-in"></i>&nbsp;{% trans "Войти в панель управления администратора" %}</h4>
+					</div>
+					<div class="modal-body">
+						<div class="well">
+							<div class="form-group{% if form.username.errors %} has-error{% endif %}">
+								<label for="{{ form.username.id_for_label }}">{{ form.username.label }}</label>
+								{{ form.username }}
+								{% if form.username.errors %}
+									{% for error in form.username.errors %}
+										<ul class="list-unstyled">
+											<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+										</ul>
+									{% endfor %}
+								{% endif %}
+							</div>
+							<div class="form-group{% if form.password.errors %} has-error{% endif %}">
+								<label for="{{ form.password.id_for_label }}">{{ form.password.label }}</label>
+								{{ form.password }}
+								{% if form.password.errors %}
+									{% for error in form.password.errors %}
+										<ul class="list-unstyled">
+											<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+										</ul>
+									{% endfor %}
+								{% endif %}
+							</div>
+							{% if form.non_field_errors %}
+								<div class="alert alert-danger" role="alert">
+									{% for error in form.non_field_errors %}
+										<ul class="list-unstyled">
+											<li class="text-danger">
+												<i class="fa fa-exclamation-circle"></i>&nbsp;<strong>{{ error|escape }}</strong>
+											</li>
+										</ul>
+									{% endfor %}
+								</div>
+							{% endif %}
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="submit" class="btn btn-success">
+							<span>{% trans 'Отправить' %}</span>&nbsp;<i class="fa fa-paper-plane"></i>
+						</button>
+						<input type="hidden" name="next" value="{{ next }}"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script type="text/javascript">
+	setTimeout(function() {$(".login-layout .container-fluid .modal-dialog .modal-content form .modal-body .well .alert-danger").fadeOut("slow");}, 5000);
+</script>
+{% endblock %}

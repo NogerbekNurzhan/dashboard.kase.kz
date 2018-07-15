@@ -1,0 +1,28 @@
+{% load i18n %}
+{% for tab in tabs %}
+	{% ifequal tab 0 %}
+		<a class="btn btn-info{% if '/documents/8/0/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+			{% trans "По дате публикации" %}
+		</a>
+	{% endifequal %}
+	{% ifequal tab 4 %}
+		<a class="btn btn-info{% if '/documents/8/4/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+			{% trans "Деятельность СВА" %}
+		</a>
+	{% endifequal %}
+	{% ifequal tab 5 %}
+		<a class="btn btn-info{% if '/documents/8/5/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+			{% trans "Деятельность СУР" %}
+		</a>
+	{% endifequal %}
+	{% ifequal tab 6 %}
+		<a class="btn btn-info{% if '/documents/8/6/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+			{% trans "Непроизводственного назначения" %}
+		</a>
+	{% endifequal %}
+	{% ifequal tab 7 %}
+		<a class="btn btn-info{% if '/documents/8/7/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+			{% trans "Поручения СД" %}
+		</a>
+	{% endifequal %}
+{% endfor %}

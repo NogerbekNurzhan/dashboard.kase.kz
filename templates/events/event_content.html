@@ -1,0 +1,116 @@
+{% extends "dashboard.html" %}
+{% load i18n static %}
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"> {# DateTimePicker CSS #}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/awesome-bootstrap-checkbox/0.3.7/awesome-bootstrap-checkbox.min.css"> {# Awesome Bootstrap Checkbox CSS #}
+	{% if use_wysiwyg_editor %}
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.css"> {# Codemirror CSS #}
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/theme/monokai.min.css"> {# Monokai CSS #}
+		<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css"> {# Summernote CSS #}
+	{% endif %}
+{% endblock %}
+{% block dashboard_content %}
+{% if perms.events.view_events %}
+	<div class="dashboard-container event-container">
+		{# START: Message about user action #}
+		<div class="alert alert-success alert-dismissible text-center custom-alert" role="alert" id="user-action-message">
+			<i class="fa fa-info-circle"></i>
+			<strong>&nbsp;{% trans "Cообщение" %}:</strong>&nbsp;<span class="user-action-message-description"></span>
+		</div>
+		{# END: Message about user action #}
+
+		{# START: Filter block #}
+		<div class="panel panel-info panel-year-language">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;<span>{% trans "Фильтр" %}</span></h4>
+			</div>
+			<div class="panel-body bg-info panel-body-style-custom" id="panel-body-language-year">
+				{% for year in years %}
+					<a class="btn btn-info{% if year|date:'Y' in request.path %} disabled{% endif %}" href="{% url "events:event_language_year" year=year|date:"Y" language=current_language %}">
+						{{ year|date:"Y" }}
+					</a>
+				{% endfor %}
+			</div>
+			<div class="panel-body bg-info panel-body-style-custom panel-body-languages">
+				{% for lang_code, lang_value in languages.items %}
+					<a class="btn btn-info{% if lang_code in request.path %} disabled{% endif %}" href="{% url 'events:event_language' language=lang_code|slice:'1:3' %}">
+						{{ lang_value }}
+					</a>
+				{% endfor %}
+			</div>
+		</div>
+		{# END: Filter block #}
+
+		{# START: Events #}
+		<div class="panel panel-success responsive-panel">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left">{% trans "События" %}</h4>
+				{% if perms.events.add_event %}
+				<a id="event-сreate-btn" class="btn btn-success pull-right" data-url="{% url 'events:event_create' current_language current_year %}">
+					<i class="fa fa-plus-circle"></i>
+					<span>{% trans "Создать новое событие" %}</span>
+				</a>
+				{% endif %}
+			</div>
+			<div class="panel-body">
+				<div id="events" class="list-group">
+					{% for event in events %}
+					<div class="list-group-item custom-list-group-item{% if not event.event_active %} darkgrey{% else %} not-darkgrey{% endif %}" data-id="{{ event.pk }}">
+						<span class="ellipsis-text{% if not event.event_active %} darkgrey-txt{% else%} green-txt{% endif %}">{{ event }}</span>
+						<span class="btn-group-right">
+							{% if perms.events.delete_event %}
+							<button class="btn event-delete-btn{% if event.event_active %} btn-danger{% else %} btn-default darkgrey{% endif %}" data-url="{% url 'events:event_delete' current_language current_year event.pk %}">
+								<i class="fa fa-ban"></i>
+							</button>
+							{% endif %}
+							{% if perms.events.change_event %}
+							<button class="btn event-edit-btn ml-5{% if event.event_active %} btn-warning{% else %} btn-default darkgrey{% endif %}" data-url="{% url 'events:event_edit' current_language current_year event.pk %}">
+								<i class="fa fa-pencil"></i>
+							</button>
+							{% endif %}
+						</span>
+					</div>
+					{% empty %}
+						<div class="list-group-item">
+							<div class="text-center">
+								<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "На данный момент нет cобытий." %}</span>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		{# END: Events #}
+
+		{# START: Model #}
+		<div class="modal fade" id="event-modal">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+		{# END: Model #}
+	</div>
+{% else %}
+	<div class="dashboard-container">
+		<div class="alert alert-danger perm-alert text-center" role="alert">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;<span>{% trans 'У вас нет доступа к просмотру событий. Обратитесь к администратору.' %}</span>
+		</div>
+	</div>
+{% endif %}
+{% endblock %}
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script> {# Moment JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> {# DateTimePicker JS #}
+	<script src="{% static 'js/autosize.js'%}"></script> {# Textarea Autosize JS #}
+	{% if use_wysiwyg_editor %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/codemirror.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.32.0/mode/xml/xml.min.js"></script>
+	{% endif %}
+	<script src="{% static 'js/summernote.js'%}"></script>
+	{% if use_wysiwyg_editor %}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/lang/summernote-ru-RU.min.js"></script>
+	{% endif %}
+	<script src="{% static 'js/events/field_image.js'%}"></script> {# Event Image Field JS #}
+	<script src="{% static 'js/events/crud.js'%}"></script> {# CRUD JS #}
+{% endblock %}

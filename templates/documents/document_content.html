@@ -1,0 +1,301 @@
+{% extends "dashboard.html" %}
+{% load i18n static %}
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"> {# DateTimePicker CSS #}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"> {# JQuery UI CSS #}
+	<link rel="stylesheet" href="http://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css"> {# Django Select 2 CSS #}
+{% endblock %}
+{% block dashboard_content %}
+{% if "/documents/1/" in request.path and perms.documents.view_document_1 or "/documents/2/" in request.path and perms.documents.view_document_2 or "/documents/3/" in request.path and perms.documents.view_document_3 or "/documents/4/" in request.path and perms.documents.view_document_4 or "/documents/5/" in request.path and perms.documents.view_document_5 or "/documents/7/" in request.path and perms.documents.view_document_7 or "/documents/8/" in request.path and perms.documents.view_document_8 or "/documents/9/" in request.path and perms.documents.view_document_9 or "/documents/11/" in request.path and perms.documents.view_document_11 or "/documents/12/" in request.path and perms.documents.view_document_12 %}
+	<div class="dashboard-container">
+		<div class="alert alert-success alert-dismissible text-center custom-alert" role="alert" id="user-action-message">
+			<i class="fa fa-info-circle"></i>
+			<strong>&nbsp;{% trans "Cообщение" %}:</strong>&nbsp;<span class="user-action-message-description"></span>
+		</div>
+		
+		<div class="alert alert-info-grey text-center">
+			<h3 class="text-center documents-h3-title">
+				{% if "/documents/1/" in request.path %}
+					<span>{% trans "Материалы БС" %}</span>
+				{% elif "/documents/2/" in request.path %}
+					<span>{% trans "Документы для членов комитета биржевого совета по финансовой отчетности и аудиту эмитентов" %}</span>
+				{% elif "/documents/3/" in request.path %}
+					<span>{% trans "Документы комитета по аудиту" %}</span>
+				{% elif "/documents/4/" in request.path %}
+					<span>{% trans "Комитет биржевого совета по бюджету и стратегическому планированию" %}</span>
+				{% elif "/documents/5/" in request.path %}
+					<span>{% trans "Комитет биржевого совета по кадрам и вознаграждениям" %}</span>
+				{% elif "/documents/7/" in request.path %}
+					<span>{% trans "Планы, бюджеты, отчеты" %}</span>
+				{% elif "/documents/8/" in request.path %}
+					<span>{% trans "Документы, утвержденные БС" %}</span>
+				{% elif "/documents/9/" in request.path %}
+					<span>{% trans "Модернизация ИТ" %}</span>
+				{% elif "/documents/11/" in request.path %}
+					<span>{% trans "Листинговая комиссия" %}</span>
+				{% elif "/documents/12/" in request.path %}
+					<span>{% trans "Собрания акционеров" %}</span>
+				{% endif %}
+			</h3>
+		</div>
+
+		<div class="panel panel-info panel-year-tab">
+			<div class="panel-body bg-info panel-body-year-tab" id="panel-body-year-tab">
+				{% if "/documents/8/" not in request.path %}
+					{% for year in years %}
+						<a class="btn btn-info{% if year|date:'Y' in request.path %} disabled{% endif %}" href="{% url "documents:category_year" category=current_category year=year|date:"Y" %}">
+							{{ year|date:"Y" }}
+						</a>
+					{% endfor %}
+				{% else %}
+					{% for tab in tabs %}
+						{% ifequal tab 0 %}
+							<a class="btn btn-info{% if '/documents/8/0/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+								{% trans "По дате публикации" %}
+							</a>
+						{% endifequal %}
+						{% ifequal tab 4 %}
+							<a class="btn btn-info{% if '/documents/8/4/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+								{% trans "Деятельность СВА" %}
+							</a>
+						{% endifequal %}
+						{% ifequal tab 5 %}
+							<a class="btn btn-info{% if '/documents/8/5/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+								{% trans "Деятельность СУР" %}
+							</a>
+						{% endifequal %}
+						{% ifequal tab 6 %}
+							<a class="btn btn-info{% if '/documents/8/6/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+								{% trans "Непроизводственного назначения" %}
+							</a>
+						{% endifequal %}
+						{% ifequal tab 7 %}
+							<a class="btn btn-info{% if '/documents/8/7/' in request.path %} disabled{% endif %}" href="{% url "documents:category_tab" category=current_category tab=tab %}">
+								{% trans "Поручения СД" %}
+							</a>
+						{% endifequal %}
+					{% endfor %}
+				{% endif %}
+			</div>
+			<div class="panel-body bg-info">
+				<div class="form-group has-feedback has-search">
+					{% csrf_token %}
+					<span class="glyphicon glyphicon-search form-control-feedback"></span>
+					<input id="document-search" type="text" class="form-control" placeholder="{% trans 'Введите название документа' %}">
+				</div>
+				<div class="alert alert-info text-center document-search-alert" role="alert">
+					<i class="fa fa-info-circle"></i>
+					<span>&nbsp;{% trans 'Поиск осуществляется по названию документа в текущей категории.' %}&nbsp;</span>
+					<i class="fa fa-spinner fa-spin fa-2x fa-fw" aria-hidden="true" style="display: none;"></i>
+				</div>
+			</div>
+		</div>
+
+		<div class="panel panel-success responsive-panel">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left">
+					<i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;<span>{% trans "Документы" %}</span>
+				</h4>
+				{% if "/documents/1/" in request.path and perms.documents.add_document_1 or "/documents/2/" in request.path and perms.documents.add_document_2 or "/documents/3/" in request.path and perms.documents.add_document_3 or "/documents/4/" in request.path and perms.documents.add_document_4 or "/documents/5/" in request.path and perms.documents.add_document_5 or "/documents/7/" in request.path and perms.documents.add_document_7 or "/documents/8/" in request.path and perms.documents.add_document_8 or "/documents/9/" in request.path and perms.documents.add_document_9 or "/documents/11/" in request.path and perms.documents.add_document_11 or "/documents/12/" in request.path and perms.documents.add_document_12 %}
+				<a id="document-сreate-btn" class="btn btn-success pull-right ml-10" data-url="{% if '/documents/8/' not in request.path %}{% url 'documents:category_year_create' current_category current_year %}{% else %}{% url 'documents:category_tab_create' current_category current_tab %}{% endif %}">
+					<i class="fa fa-plus-circle"></i>
+					<span>{% trans "Создать новый документ" %}</span>
+				</a>
+				{% endif %}
+				{% if documents %}
+					<button id="document-expand-collapse-btn" class="btn btn-info pull-right ml-10">
+						<i class="fa fa-arrow-down document-expand-collapse-icon"></i>
+					</button>
+					{% if "/documents/1/" in request.path and perms.documents.change_order_document_1 or "/documents/2/" in request.path and perms.documents.change_order_document_2 or "/documents/3/" in request.path and perms.documents.change_order_document_3 or "/documents/4/" in request.path and perms.documents.change_order_document_4 or "/documents/5/" in request.path and perms.documents.change_order_document_5 or "/documents/7/" in request.path and perms.documents.change_order_document_7 or "/documents/8/" in request.path and perms.documents.change_order_document_8 or "/documents/9/" in request.path and perms.documents.change_order_document_9 or "/documents/11/" in request.path and perms.documents.change_order_document_11 or "/documents/12/" in request.path and perms.documents.change_order_document_12 %}
+					<a id="document-order-btn" class="btn btn-warning pull-right">
+						<span>{% trans "Cохранить очередность" %}</span>
+						<i class="fa fa-spinner fa-spin fa-fw" aria-hidden="true" style="display: none;"></i>
+					</a>
+					{% endif %}
+				{% endif %}
+			</div>
+			<div class="panel-body" id="panel-body-documents">
+				{% if documents %}
+				<div id="documents" class="dd">
+					<ol class="dd-list">
+						{% include page_template %}
+					</ol>
+				</div>
+				<div id="document-search-result">
+					{# SEARCH RESULT #}
+				</div>
+				{% else %}
+				<div class="list-group" id="empty-list-group-documents">
+					<div class="list-group-item">
+						<div class="text-center">
+							<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "Нет документов. Попробуйте задать другие агрументы в url адрес." %}</span>
+						</div>
+					</div>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="document-modal">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content"></div>
+		</div>
+	</div>
+{% else %}
+	<div class="dashboard-container">
+		<div class="alert alert-danger perm-alert text-center" role="alert">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;<span>{% trans 'У вас нет доступа к просмотру документов в данной категории. Обратитесь к администратору.' %}</span>
+		</div>
+	</div>
+{% endif %}
+{% endblock %}
+
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {# JQuery UI JS #}
+	<script src="{% static 'js/documents/nestable2.min.js'%}"></script> {# JQuery Nestable 2 JS #}
+	<script src="{% static 'el-pagination/js/el-pagination.js'%}"></script> {# django-el-pagination JS #}
+	<script src="{% static 'js/documents/file_field.js'%}"></script> {# Document File Field JS #}
+	<script src="{% static 'django_select2/django_select2.js' %}"></script> {# Django Select 2 JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.min.js"></script> {# Select 2 JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script> {# Moment JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> {# DateTimePicker JS #}
+
+	<script type="text/javascript">
+		$('#documents').nestable({maxDepth: 6}).nestable('collapseAll');
+	</script>
+
+	{# START: Expand/Collapse tree nodes #}
+	<script type="text/javascript">
+		var click = true;
+		$("#document-expand-collapse-btn").click(function(){
+			if (!click) {
+				$('#documents').nestable('collapseAll');
+				$(".document-expand-collapse-icon").toggleClass("fa-arrow-down fa-arrow-up");
+				click = true;
+			}
+			else {
+				$('#documents').nestable('expandAll');
+				$(".document-expand-collapse-icon").toggleClass("fa-arrow-up fa-arrow-down");
+				click = false;
+			}
+		});
+	</script>
+	{# END: Expand/Collapse tree nodes #}
+
+	{# START: AJAX request to change the order of documents #}
+	<script type="text/javascript">
+		$("#document-order-btn").click(function(){
+			$.ajax({
+				url: "{% url 'documents:document_order' %}",
+				type: "post",
+				contentType: 'application/json; charset= utf-8',
+				dataType: 'json',
+				data: JSON.stringify($('#documents').nestable('serialize')),
+				beforeSend: function() {
+					$('#document-order-btn .fa').fadeIn();
+					$('a').not('#document-order-btn').addClass("not-active");
+					$('button').not('.dd-collapse, .dd-expand').addClass("not-active");
+					$('.dd-handle').addClass("not-active");
+					$('#document-search').addClass("not-active");
+					$('#document-order-btn').addClass('not-clickable');
+				},
+				error: function (xhr, ajaxOptions, thrownError) {
+					if(xhr.status==403) {
+						window.location.reload();
+					}
+				},
+			})
+			.done(function (data, textStatus, jqXHR) {
+				$('#document-order-btn .fa').fadeOut();
+				$('a').not('#document-order-btn').removeClass("not-active");
+				$('button').not('.dd-collapse, .dd-expand').removeClass("not-active");
+				$('.dd-handle').removeClass("not-active");
+				$('#document-search').removeClass("not-active");
+				$('#document-order-btn').removeClass('not-clickable');
+			});
+		});
+	</script>
+	{# START: AJAX request to change the order of documents #}
+
+	{# START: AJAX request to endless pagination #}
+	<script type="text/javascript">
+		function activatePagination(){
+			$.endlessPaginate({
+				paginateOnScroll: true,
+				onCompleted: function(context, fragment) {
+					activateTooltip();
+					$('#documents').nestable('destroy');
+					if ($("#document-expand-collapse-btn i").hasClass("fa-arrow-down")) {
+						$('#documents').nestable({maxDepth: 6}).nestable('collapseAll');
+					}
+					else {
+						$('#documents').nestable({maxDepth: 6}).nestable('expandAll');
+					}
+				}
+			});
+		}
+		activatePagination();
+	</script>
+	{# END: AJAX request to endless pagination #}
+
+	{# START: AJAX request for search of documents #}
+	<script type="text/javascript">
+		$("#document-search").keyup(function(){
+			if ($(this).val().length > 1) {
+				$.ajax({
+					type: "POST",
+					url: "{% url 'documents:document_search' current_category %}",
+					data: {
+						"search_text": $("#document-search").val(),
+						"csrfmiddlewaretoken": $("input[name=csrfmiddlewaretoken]").val()
+					},
+					beforeSend: function() {
+						$('.document-search-alert .fa-spinner').show();
+						$('.document-search-alert span').hide();
+						$('.document-search-alert .fa-info-circle').hide();
+					},
+					success: function (data, textStatus, xhr) {
+						$("#documents").hide();
+						$('#document-order-btn').hide();
+						$('#document-expand-collapse-btn').hide();
+						$("#document-search-result").html(data);
+						$("#document-search-result").show();
+						activateTooltip();
+					},
+					dataType: "html"
+				})
+				.done(function (data, textStatus, jqXHR) {
+					$('.document-search-alert .fa-spinner').hide();
+					$('.document-search-alert span').show();
+					$('.document-search-alert .fa-info-circle').show();
+				});
+			}
+			else{
+				$("#document-search-result").hide();
+				$("#documents").show();
+				$('#document-order-btn').show();
+				$('#document-expand-collapse-btn').show();
+			}
+		});
+	</script>
+	{# END: AJAX request for search of documents #}
+
+	{# START: Use tooltip only if document title too long. At the end of such title user see (...) #}
+	<script type="text/javascript">
+	function activateTooltip() {
+		$('.dd-handle-title').bind('mouseenter', function(){
+			var $this = $(this);
+			if(this.offsetWidth < this.scrollWidth && !$this.attr('title')){
+				$this.attr('title', $this.text());
+				$this.attr('data-toggle', 'tooltip');
+				$(document).tooltip();
+			}
+		});
+	}
+	activateTooltip();
+	</script>
+	{# END: Use tooltip only if document title too long. At the end of such title user see (...) #}
+
+	<script src="{% static 'js/documents/crud.js'%}"></script> {# Document CRUD JS #}
+{% endblock %}

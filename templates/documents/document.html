@@ -1,0 +1,29 @@
+<li class="dd-item dd3-item infinite-item" data-id="{{node.id}}">
+	<div class="dd-handle dd3-handle"></div>
+	<div class="dd-content dd3-content">
+		<span class="dd-handle-title" data-toggle='tooltip' title=''>
+			{{ node.title }}
+		</span>
+		<span class="document-btn-group-right">
+			<div class="document-file-load-btn-block">
+				{% if node.src %}
+				<a class="btn btn-sm btn-info document-file-load-btn" href="http://doc.kase.kz/{{ node.src.name }}">
+					<i class="fa fa-download"></i>
+				</a>
+				{% endif %}
+			</div>
+
+			{% if "/documents/1/" in request.path and perms.documents.delete_document_1 or "/documents/2/" in request.path and perms.documents.delete_document_2 or "/documents/3/" in request.path and perms.documents.delete_document_3 or "/documents/4/" in request.path and perms.documents.delete_document_4 or "/documents/5/" in request.path and perms.documents.delete_document_5 or "/documents/7/" in request.path and perms.documents.delete_document_7 or "/documents/8/" in request.path and perms.documents.delete_document_8 or "/documents/9/" in request.path and perms.documents.delete_document_9 or "/documents/11/" in request.path and perms.documents.delete_document_11 or "/documents/12/" in request.path and perms.documents.delete_document_12 %}
+			<button class="btn btn-sm btn-danger ml-5 document-delete-btn" data-url="{% if '/documents/8/' not in request.path %}{% url 'documents:category_year_delete' current_category current_year node.id %}{% else %}{% url 'documents:category_tab_delete' current_category current_tab node.id %}{% endif %}">
+				<i class="fa fa-ban"></i>
+			</button>
+			{% endif %}
+
+			{% if "/documents/1/" in request.path and perms.documents.edit_document_1 or "/documents/2/" in request.path and perms.documents.edit_document_2 or "/documents/3/" in request.path and perms.documents.edit_document_3 or "/documents/4/" in request.path and perms.documents.edit_document_4 or "/documents/5/" in request.path and perms.documents.edit_document_5 or "/documents/7/" in request.path and perms.documents.edit_document_7 or "/documents/8/" in request.path and perms.documents.edit_document_8 or "/documents/9/" in request.path and perms.documents.edit_document_9 or "/documents/11/" in request.path and perms.documents.edit_document_11 or "/documents/12/" in request.path and perms.documents.edit_document_12 %}
+			<button class="btn btn-sm btn-warning ml-5 document-edit-btn" data-url="{% if '/documents/8/' not in request.path %}{% url 'documents:category_year_edit' current_category current_year node.id %}{% else %}{% url 'documents:category_tab_edit' current_category current_tab node.id %}{% endif %}">
+				<i class="fa fa-pencil"></i>
+			</button>
+			{% endif %}
+		</span>
+	</div>
+</li>

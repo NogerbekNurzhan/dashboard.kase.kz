@@ -1,0 +1,320 @@
+{% load i18n %}
+<form method="post" action="{% url 'indicators:indicator_edit' indicator.pk %}" class="indicator-edit-form" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-header bg-success">
+		<button type="button" class="close" data-dismiss="modal">
+			<i class="fa fa-times"></i>  
+		</button>
+		<h4 class="modal-title text-success">{% trans 'Редактировать данные индикатора' %}</h4>
+	</div>
+	<div class="modal-body">
+		<ul class="nav nav-tabs nav-justified" style="margin-bottom: 15px;">
+			<li class="active"><a class="tabnav" data-toggle="tab" href="#tab-ru">{% trans 'Русский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-en">{% trans 'Английский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-kz">{% trans 'Казахский' %}</a></li>
+		</ul>
+		<div class="form-group{% if indicator_edit_form.fini_code.errors %} has-error{% endif %}">
+			<label for="{{ indicator_edit_form.fini_code.id_for_label }}">{{ indicator_edit_form.fini_code.label }}</label>
+			{{ indicator_edit_form.fini_code }}
+			{% if indicator_edit_form.fini_code.errors %}
+				{% for error in indicator_edit_form.fini_code.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="tab-content custom-tab-content">
+			<div id="tab-ru" class="tab-pane fade in active">
+				<div class="form-group{% if indicator_edit_form.name_ru.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.name_ru.id_for_label }}">{{ indicator_edit_form.name_ru.label }}</label>
+					{{ indicator_edit_form.name_ru }}
+					{% if indicator_edit_form.name_ru.errors %}
+						{% for error in indicator_edit_form.name_ru.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if indicator_edit_form.title_ru.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.title_ru.id_for_label }}">{{ indicator_edit_form.title_ru.label }}</label>
+					{{ indicator_edit_form.title_ru }}
+					{% if indicator_edit_form.title_ru.errors %}
+						{% for error in indicator_edit_form.title_ru.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if indicator_edit_form.unit_ru.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.unit_ru.id_for_label }}">{{ indicator_edit_form.unit_ru.label }}</label>
+					{{ indicator_edit_form.unit_ru }}
+					{% if indicator_edit_form.unit_ru.errors %}
+						{% for error in indicator_edit_form.unit_ru.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div id="tab-en" class="tab-pane fade">
+				<div class="form-group{% if indicator_edit_form.name_en.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.name_en.id_for_label }}">{{ indicator_edit_form.name_en.label }}</label>
+					{{ indicator_edit_form.name_en }}
+					{% if indicator_edit_form.name_en.errors %}
+						{% for error in indicator_edit_form.name_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if indicator_edit_form.title_en.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.title_en.id_for_label }}">{{ indicator_edit_form.title_en.label }}</label>
+					{{ indicator_edit_form.title_en }}
+					{% if indicator_edit_form.title_en.errors %}
+						{% for error in indicator_edit_form.title_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if indicator_edit_form.unit_en.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.unit_en.id_for_label }}">{{ indicator_edit_form.unit_en.label }}</label>
+					{{ indicator_edit_form.unit_en }}
+					{% if indicator_edit_form.unit_en.errors %}
+						{% for error in indicator_edit_form.unit_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div id="tab-kz" class="tab-pane fade">
+				<div class="form-group{% if indicator_edit_form.name_kz.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.name_kz.id_for_label }}">{{ indicator_edit_form.name_kz.label }}</label>
+					{{ indicator_edit_form.name_kz }}
+					{% if indicator_edit_form.name_kz.errors %}
+						{% for error in indicator_edit_form.name_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if indicator_edit_form.title_kz.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.title_kz.id_for_label }}">{{ indicator_edit_form.title_kz.label }}</label>
+					{{ indicator_edit_form.title_kz }}
+					{% if indicator_edit_form.title_kz.errors %}
+						{% for error in indicator_edit_form.title_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if indicator_edit_form.unit_kz.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.unit_kz.id_for_label }}">{{ indicator_edit_form.unit_kz.label }}</label>
+					{{ indicator_edit_form.unit_kz }}
+					{% if indicator_edit_form.unit_kz.errors %}
+						{% for error in indicator_edit_form.unit_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.link.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.link.id_for_label }}">{{ indicator_edit_form.link.label }}</label>
+					{{ indicator_edit_form.link }}
+					{% if indicator_edit_form.link.errors %}
+						{% for error in indicator_edit_form.link.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.kase_info_key.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.kase_info_key.id_for_label }}">{{ indicator_edit_form.kase_info_key.label }}</label>
+					{{ indicator_edit_form.kase_info_key }}
+					{% if indicator_edit_form.kase_info_key.errors %}
+						{% for error in indicator_edit_form.kase_info_key.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.fini_code_diff_ttl.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.fini_code_diff_ttl.id_for_label }}">{{ indicator_edit_form.fini_code_diff_ttl.label }}</label>
+					{{ indicator_edit_form.fini_code_diff_ttl }}
+					{% if indicator_edit_form.fini_code_diff_ttl.errors %}
+						{% for error in indicator_edit_form.fini_code_diff_ttl.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.fini_code_ind_ttl.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.fini_code_diff_ttl.id_for_label }}">{{ indicator_edit_form.fini_code_ind_ttl.label }}</label>
+					{{ indicator_edit_form.fini_code_ind_ttl }}
+					{% if indicator_edit_form.fini_code_ind_ttl.errors %}
+						{% for error in indicator_edit_form.fini_code_ind_ttl.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.fini_code_diff_frmt.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.fini_code_diff_frmt.id_for_label }}">{{ indicator_edit_form.fini_code_diff_frmt.label }}</label>
+					{{ indicator_edit_form.fini_code_diff_frmt }}
+					{% if indicator_edit_form.fini_code_diff_frmt.errors %}
+						{% for error in indicator_edit_form.fini_code_diff_frmt.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.fini_code_ind_frmt.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.fini_code_diff_ttl.id_for_label }}">{{ indicator_edit_form.fini_code_ind_frmt.label }}</label>
+					{{ indicator_edit_form.fini_code_ind_frmt }}
+					{% if indicator_edit_form.fini_code_ind_frmt.errors %}
+						{% for error in indicator_edit_form.fini_code_ind_frmt.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.fini_code_chrt_pd.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.fini_code_chrt_pd.id_for_label }}">{{ indicator_edit_form.fini_code_chrt_pd.label }}</label>
+					{{ indicator_edit_form.fini_code_chrt_pd }}
+					{% if indicator_edit_form.fini_code_chrt_pd.errors %}
+						{% for error in indicator_edit_form.fini_code_chrt_pd.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.value_divisor.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.fini_code_diff_ttl.id_for_label }}">{{ indicator_edit_form.value_divisor.label }}</label>
+					{{ indicator_edit_form.value_divisor }}
+					{% if indicator_edit_form.value_divisor.errors %}
+						{% for error in indicator_edit_form.value_divisor.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.fini_code_chrt_type.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.fini_code_diff_ttl.id_for_label }}">{{ indicator_edit_form.fini_code_chrt_type.label }}</label>
+					{{ indicator_edit_form.fini_code_chrt_type }}
+					{% if indicator_edit_form.fini_code_chrt_type.errors %}
+						{% for error in indicator_edit_form.fini_code_chrt_type.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if indicator_edit_form.trandtype.errors %} has-error{% endif %}">
+					<label for="{{ indicator_edit_form.trandtype.id_for_label }}">{{ indicator_edit_form.trandtype.label }}</label>
+					{{ indicator_edit_form.trandtype }}
+					{% if indicator_edit_form.trandtype.errors %}
+						{% for error in indicator_edit_form.trandtype.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="indicator-errors">
+			<i class="fa fa-exclamation-triangle"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer custom-modal-footer">
+		<div class="pull-left">
+			<div class="form-group custom-form-group{% if indicator_edit_form.isvisible.errors %} has-error{% endif %}">
+				<div class="custom-checkbox">
+					<label for="{{ indicator_edit_form.isvisible.id_for_label }}">
+						{{ indicator_edit_form.isvisible }}
+						<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+						<strong>{{ indicator_edit_form.isvisible.label }}</strong>
+					</label>
+				</div>
+				{% if indicator_edit_form.isvisible.errors %}
+					{% for error in indicator_edit_form.isvisible.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="pull-right custom-pull-right">
+			<button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Закрыть' %}</button>
+			<button type="submit" class="btn btn-success">{% trans 'Обновить' %}</button>
+		</div>
+	</div>
+</form>

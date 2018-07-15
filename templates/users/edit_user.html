@@ -1,0 +1,197 @@
+{% load i18n %}
+<form method="post" action="{% url 'user:user_edit' user.pk %}" class="user-edit-form" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-header bg-success">
+		<button type="button" class="close" data-dismiss="modal">
+			<i class="fa fa-times"></i>
+		</button>
+		<h4 class="modal-title text-success">{% trans 'Отредактировать данные пользователя' %}</h4>
+	</div>
+	<div class="modal-body">
+		<div class="form-group{% if user_edit_form.username.errors %} has-error{% endif %}">
+			<label for="{{ user_edit_form.username.id_for_label }}">{{ user_edit_form.username.label }}</label>
+			{{ user_edit_form.username }}
+			{% if user_edit_form.username.errors %}
+				{% for error in user_edit_form.username.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="form-group{% if user_edit_form.email.errors %} has-error{% endif %}">
+			<label for="{{ user_edit_form.email.id_for_label }}">{{ user_edit_form.email.label }}</label>
+			{{ user_edit_form.email }}
+			{% if user_edit_form.email.errors %}
+				{% for error in user_edit_form.email.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if user_edit_form.first_name.errors %} has-error{% endif %}">
+					<label for="{{ user_edit_form.first_name.id_for_label }}">{{ user_edit_form.first_name.label }}</label>
+					{{ user_edit_form.first_name }}
+					{% if user_edit_form.first_name.errors %}
+						{% for error in user_edit_form.first_name.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if user_edit_form.last_name.errors %} has-error{% endif %}">
+					<label for="{{ user_edit_form.last_name.id_for_label }}">{{ user_edit_form.last_name.label }}</label>
+					{{ user_edit_form.last_name }}
+					{% if user_edit_form.last_name.errors %}
+						{% for error in user_edit_form.last_name.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if user_edit_form.last_login.errors %} has-error{% endif %}">
+					<label for="{{ user_edit_form.last_login.id_for_label }}">{{ user_edit_form.last_login.label }}</label>
+					<div class='input-group date custom-datetimepicker'>
+						{{ user_edit_form.last_login }}
+						<span class="input-group-addon">
+							<span class="fa fa-calendar"></span>
+						</span>
+					</div>
+					{% if user_edit_form.last_login.errors %}
+						{% for error in user_edit_form.last_login.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div class="col-xs-6 col-md-6 col-sm-6 col-lg-6">
+				<div class="form-group{% if user_edit_form.date_joined.errors %} has-error{% endif %}">
+					<label for="{{ user_edit_form.date_joined.id_for_label }}">{{ user_edit_form.date_joined.label }}</label>
+					<div class='input-group date custom-datetimepicker'>
+						{{ user_edit_form.date_joined }}
+						<span class="input-group-addon">
+							<span class="fa fa-calendar"></span>
+						</span>
+					</div>
+					{% if user_edit_form.date_joined.errors %}
+						{% for error in user_edit_form.date_joined.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="form-group{% if user_edit_form.password.errors %} has-error{% endif %}">
+			<label for="{{ user_edit_form.password.id_for_label }}">{{ user_edit_form.password.label }}</label>
+			{{ user_edit_form.password }}
+			{% if user_edit_form.password.errors %}
+				{% for error in user_edit_form.password.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="well text-center">
+			<div class="form-group wysiwyg-form-group{% if user_edit_form.use_wysiwyg_editor.errors %} has-error{% endif %}">
+				<div class="custom-checkbox">
+					<label class="wysiwyg-label" for="{{ user_edit_form.use_wysiwyg_editor.id_for_label }}">
+						{{ user_edit_form.use_wysiwyg_editor }}
+						<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+						{{ user_edit_form.use_wysiwyg_editor.label }}
+					</label>
+				</div>
+				{% if user_edit_form.use_wysiwyg_editor.errors %}
+					{% for error in user_edit_form.use_wysiwyg_editor.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="row well custom-well{% ifequal user.username|stringformat:"s" request.user.username %} invisible-item{% endifequal %}">
+			{% for choice in user_edit_form.user_role %}
+				<div class="col-xs-4 col-md-4 col-sm-4 col-lg-4">
+					<div class="radio custom-radio">
+						{{ choice.tag }}
+						<label for='{{ user_edit_form.user_role.name }}_{{ forloop.counter0 }}'>{{ choice.choice_label }}</label>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+ 		<div class="user-permissions-wrapper">
+ 			<div class="form-group{% if user_edit_form.user_permissions.errors %} has-error{% endif %}">
+				<label for="{{ user_edit_form.user_permissions.id_for_label }}">{{ user_edit_form.user_permissions.label }}</label>
+				{{ user_edit_form.user_permissions }}
+				{% if user_edit_form.user_permissions.errors %}
+					{% for error in user_edit_form.user_permissions.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="user-errors">
+			<i class="fa fa-exclamation-triangle"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer custom-modal-footer">
+		<div class="pull-left">
+			<div class="form-group custom-form-group{% if user_edit_form.is_active.errors %} has-error{% endif %}">
+				<div class="custom-checkbox">
+					<label for="{{ user_edit_form.is_active.id_for_label }}">
+						{{ user_edit_form.is_active }}
+						<span class="cr"><i class="cr-icon glyphicon glyphicon-ok"></i></span>
+						<strong>{% trans "Активная учетная запись" %}</strong>
+					</label>
+				</div>
+				{% if user_edit_form.is_active.errors %}
+					{% for error in user_edit_form.is_active.errors %}
+						<ul class="list-unstyled">
+							<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+						</ul>
+					{% endfor %}
+				{% endif %}
+			</div>
+		</div>
+		<div class="pull-right custom-pull-right">
+			<button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Закрыть' %}</button>
+			<button type="submit" class="btn btn-success">{% trans 'Обновить' %}</button>
+		</div>
+	</div>
+</form>

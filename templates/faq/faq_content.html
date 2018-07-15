@@ -1,0 +1,112 @@
+{% extends "dashboard.html" %}
+{% load i18n static %}
+{% block style %}
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.css"> {# DateTimePicker CSS #}
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.css"> {# JQuery-UI CSS #}
+{% endblock %}
+{% block dashboard_content %}
+{% if perms.faq.view_faq %}
+	<div class="dashboard-container event-container">
+		{# START: Message about user action #}
+		<div class="alert alert-success alert-dismissible text-center custom-alert" role="alert" id="user-action-message">
+			<i class="fa fa-info-circle"></i>
+			<strong>&nbsp;{% trans "Cообщение" %}:</strong>&nbsp;<span class="user-action-message-description"></span>
+		</div>
+		{# END: Message about user action #}
+
+		{# START: Filter block #}
+		<div class="panel panel-info panel-language">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left"><i class="fa fa-filter" aria-hidden="true"></i>&nbsp;<span>{% trans "Фильтр" %}</span></h4>
+			</div>
+			<div class="panel-body bg-info panel-body-style-custom panel-body-languages">
+				{% for lang_code, lang_value in languages.items %}
+					<a class="btn btn-info{% if lang_code in request.path %} disabled{% endif %}" href="{% url 'faq:faq_language' language=lang_code|slice:'1:3' %}">
+						{{ lang_value }}
+					</a>
+				{% endfor %}
+			</div>
+		</div>
+		{# END: Filter block #}
+
+		{# START: FAQ: Questions #}
+		<div class="panel panel-success responsive-panel">
+			<div class="panel-heading clearfix">
+				<h4 class="panel-title pull-left"><i class="fa fa-question" aria-hidden="true"></i>&nbsp;{% trans "Список вопросов" %}</h4>
+				{% if perms.faq.add_faq %}
+				<a id="faq-сreate-btn" class="btn btn-success pull-right ml-15" data-url="{% url 'faq:faq_create' current_language %}">
+					<i class="fa fa-plus-circle"></i>
+					<span>{% trans "Создать новый вопрос" %}</span>
+				</a>
+				{% endif %}
+				<div class="icon-addon addon-md pull-right">
+					<input type="text" placeholder="{% trans "Ищите конкретный вопрос?" %}" class="form-control" id="search-questions">
+					<label for="search-videos" class="glyphicon glyphicon-search" rel="tooltip" title="{% trans "Поиск вопроса" %}"></label>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div id="questions" class="list-group">
+					{% include 'faq/questions.html' %}
+				</div>
+				<div class="list-group invisible-item" id="empty-list-group">
+					<div class="list-group-item">
+						<div class="text-center">
+							<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "Поиск не дал результатов. Попробуйте еще раз." %}</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		{# END: Questions #}
+
+		{# START: Model #}
+		<div class="modal fade" id="faq-modal">
+			<div class="modal-dialog modal-lg">
+				<div class="modal-content"></div>
+			</div>
+		</div>
+		{# END: Model #}
+	</div>
+{% else %}
+	<div class="dashboard-container">
+		<div class="alert alert-danger perm-alert text-center" role="alert">
+			<i class="fa fa-exclamation-circle" aria-hidden="true"></i>&nbsp;<span>{% trans 'У вас нет доступа к просмотру часто задаваемых вопросов (FAQ). Обратитесь к администратору.' %}</span>
+		</div>
+	</div>
+{% endif %}
+{% endblock %}
+{% block script %}
+	<script src="{% static 'js/sidebar.js'%}"></script> {# Sidebar JS #}
+	<script src="{% static 'js/faq/faq_search.js'%}"></script>{# FAQ Search JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/moment-with-locales.min.js"></script> {# Moment JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script> {# DateTimePicker JS #}
+	{# START: Sorting JS #}
+	<script type="text/javascript">
+	$(function () {
+		$("#questions").sortable({
+			start: function (event, ui) {
+				ui.placeholder.height(ui.item.height());
+			},
+			stop: function(event, ui) {
+				faq_order = {};
+				$("#questions").children().each(function(){
+					faq_order[$(this).data('id')] = $(this).index();
+				});
+				$.ajax({
+					url: "{% url 'faq:faq_sorting' %}",
+					type: "post",
+					contentType: 'application/json; charset= utf-8',
+					dataType: 'json',
+					data: JSON.stringify(faq_order)
+				});
+				console.log(faq_order);
+			},
+			disabled: $("#questions .list-group-item").length == 1
+		});
+	});
+	</script>
+	{# START: Sorting JS #}
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script> {# JQuery UI #}
+	<script src="{% static 'js/autosize.js'%}"></script> {# Textarea Autosize JS #}
+	<script src="{% static 'js/faq/crud.js'%}"></script>{# CRUD JS #}
+{% endblock %}

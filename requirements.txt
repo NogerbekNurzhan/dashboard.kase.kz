@@ -1,0 +1,13 @@
+django-braces==1.11.0
+django-select2==5.11.1
+Pillow==4.2.1
+django-modeltranslation==0.12.1
+cx_Oracle==6.0.2
+gunicorn==19.7.1
+supervisor==3.3.3
+django==1.11.5
+django-reversion==2.0.11
+django-closuretree==1.2.0
+django-el-pagination==3.2.4
+django-split-settings==0.3.0
+transliterate==1.10

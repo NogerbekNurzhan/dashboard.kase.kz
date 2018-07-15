@@ -1,0 +1,43 @@
+{% load i18n %}
+{% if documents.count > 0 %}
+<ol class="dd-list">
+	{% for node in documents %}
+	<li class="dd-item dd3-item infinite-item" data-id="{{node.id}}">
+		<div class="dd-content dd3-content">
+			<span class="dd-handle-title">
+				{{ node.title }}
+			</span>
+			<span class="document-btn-group-right">
+				<div class="document-file-load-btn-block">
+					{% if node.src %}
+					<a class="btn btn-sm btn-info document-file-load-btn" href="http://doc.kase.kz/{{ node.src.name }}">
+						<i class="fa fa-download"></i>
+					</a>
+					{% endif %}
+				</div>
+
+				{% if "/search/1/" in request.path and perms.documents.delete_document_1 or "/search/2/" in request.path and perms.documents.delete_document_2 or "/search/3/" in request.path and perms.documents.delete_document_3 or "/search/4/" in request.path and perms.documents.delete_document_4 or "/search/5/" in request.path and perms.documents.delete_document_5 or "/search/7/" in request.path and perms.documents.delete_document_7 or "/search/8/" in request.path and perms.documents.delete_document_8 or "/search/9/" in request.path and perms.documents.delete_document_9 or "/search/11/" in request.path and perms.documents.delete_document_11 or "/search/12/" in request.path and perms.documents.delete_document_12 %}
+				<button class="btn btn-sm btn-danger ml-5 document-delete-btn" data-url="{% if '/search/8/' not in request.path %}{% url 'documents:category_year_delete' current_category node.date_add|date:'Y' node.id %}{% else %}{% url 'documents:category_tab_delete' current_category node.tab node.id %}{% endif %}">
+					<i class="fa fa-ban"></i>
+				</button>
+				{% endif %}
+
+				{% if "/search/1/" in request.path and perms.documents.edit_document_1 or "/search/2/" in request.path and perms.documents.edit_document_2 or "/search/3/" in request.path and perms.documents.edit_document_3 or "/search/4/" in request.path and perms.documents.edit_document_4 or "/search/5/" in request.path and perms.documents.edit_document_5 or "/search/7/" in request.path and perms.documents.edit_document_7 or "/search/8/" in request.path and perms.documents.edit_document_8 or "/search/9/" in request.path and perms.documents.edit_document_9 or "/search/11/" in request.path and perms.documents.edit_document_11 or "/search/12/" in request.path and perms.documents.edit_document_12 %}
+				<button class="btn btn-sm btn-warning ml-5 document-edit-btn" data-url="{% if '/search/8/' not in request.path %}{% url 'documents:category_year_edit' current_category node.date_add|date:'Y' node.id %}{% else %}{% url 'documents:category_tab_edit' current_category node.tab node.id %}{% endif %}">
+					<i class="fa fa-pencil"></i>
+				</button>
+				{% endif %}
+			</span>
+		</div>
+	</li>
+	{% endfor %}
+</ol>
+{% else %}
+	<div class="list-group empty-document-search">
+		<div class="list-group-item">
+			<div class="text-center">
+				<i class="fa fa-info-circle"></i>&nbsp;<span>{% trans "Поиск не дал результатов. Попробуйте ввести другое название документа." %}</span>
+			</div>
+		</div>
+	</div>
+{% endif %}

@@ -1,0 +1,160 @@
+{% load i18n %}
+<form method="post" action="{% url 'video:video_edit' video.id %}" class="video-edit-form" enctype="multipart/form-data">
+	{% csrf_token %}
+	<div class="modal-header bg-success">
+		<button type="button" class="close" data-dismiss="modal">
+      		<i class="fa fa-times"></i>  
+    	</button>
+		<h4 class="modal-title text-success">{% trans 'Создать новое видео' %}</h4>
+	</div>
+	<div class="modal-body">
+		<ul class="nav nav-tabs nav-justified">
+			<li class="active"><a class="tabnav" data-toggle="tab" href="#tab-ru">{% trans 'Русский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-en">{% trans 'Английский' %}</a></li>
+			<li><a class="tabnav" data-toggle="tab" href="#tab-kz">{% trans 'Казахский' %}</a></li>
+		</ul>
+		<div class="tab-content custom-tab-content">
+			<div id="tab-ru" class="tab-pane fade in active">
+				<div class="form-group{% if video_edit_form.head.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.head.id_for_label }}">{{ video_edit_form.head.label }}</label>
+					{{ video_edit_form.head }}
+					{% if video_edit_form.head.errors %}
+						{% for error in video_edit_form.head.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if video_edit_form.body.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.body.id_for_label }}">{{ video_edit_form.body.label }}</label>
+					{{ video_edit_form.body }}
+					{% if video_edit_form.body.errors %}
+						{% for error in video_edit_form.body.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if video_edit_form.link.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.link.id_for_label }}">{{ video_edit_form.link.label }}</label>
+					{{ video_edit_form.link }}
+					{% if video_edit_form.link.errors %}
+						{% for error in video_edit_form.link.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div id="tab-en" class="tab-pane fade">
+				<div class="form-group{% if video_edit_form.head_en.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.head_en.id_for_label }}">{{ video_edit_form.head_en.label }}</label>
+					{{ video_edit_form.head_en }}
+					{% if video_edit_form.head_en.errors %}
+						{% for error in video_edit_form.head_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if video_edit_form.body_en.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.body_en.id_for_label }}">{{ video_edit_form.body_en.label }}</label>
+					{{ video_edit_form.body_en }}
+					{% if video_edit_form.body_en.errors %}
+						{% for error in video_edit_form.body_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if video_edit_form.link_en.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.link_en.id_for_label }}">{{ video_edit_form.link_en.label }}</label>
+					{{ video_edit_form.link_en }}
+					{% if video_edit_form.link_en.errors %}
+						{% for error in video_edit_form.link_en.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+			<div id="tab-kz" class="tab-pane fade">
+				<div class="form-group{% if video_edit_form.head_kz.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.head_kz.id_for_label }}">{{ video_edit_form.head_kz.label }}</label>
+					{{ video_edit_form.head_kz }}
+					{% if video_edit_form.head_kz.errors %}
+						{% for error in video_edit_form.head_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if video_edit_form.body_kz.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.body_kz.id_for_label }}">{{ video_edit_form.body_kz.label }}</label>
+					{{ video_edit_form.body_kz }}
+					{% if video_edit_form.body_kz.errors %}
+						{% for error in video_edit_form.body_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+				<div class="form-group{% if video_edit_form.link_kz.errors %} has-error{% endif %}">
+					<label for="{{ video_edit_form.link_kz.id_for_label }}">{{ video_edit_form.link_kz.label }}</label>
+					{{ video_edit_form.link_kz }}
+					{% if video_edit_form.link_kz.errors %}
+						{% for error in video_edit_form.link_kz.errors %}
+							<ul class="list-unstyled">
+								<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+							</ul>
+						{% endfor %}
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		<div class="form-group{% if video_edit_form.category_id.errors %} has-error{% endif %}">
+			<label for="{{ video_edit_form.category_id.id_for_label }}">{{ video_edit_form.category_id.label }}</label>
+			{{ video_edit_form.category_id }}
+			{% if video_edit_form.category_id.errors %}
+				{% for error in video_edit_form.category_id.errors %}
+					<ul class="list-unstyled">
+						<li class="text-danger"><strong>{{ error|escape }}</strong></li>
+					</ul>
+				{% endfor %}
+			{% endif %}
+		</div>
+		<div class="alert alert-danger alert-dismissible text-center invisible-item" role="alert" id="video-errors">
+			<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+			<strong>&nbsp;{% trans "Ошибка" %}:</strong>&nbsp;<span>{% trans "Проверьте введенные вами данные" %}.</span><br><span class="error-description"></span>
+		</div>
+		<div id="loader">
+			<div class="loader-item" id="loader-first">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-second">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-third">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fourth">
+				<div class="loader-item-inner"></div>
+			</div>
+			<div class="loader-item" id="loader-fifth">
+				<div class="loader-item-inner"></div>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Закрыть' %}</button>
+		<button type="submit" class="btn btn-success">{% trans 'Создать' %}</button>
+	</div>
+</form>
